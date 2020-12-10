@@ -3,23 +3,23 @@ namespace Conways.Game.Of.Life
     public class Grid
     {
         public Cell[,] Board {get; private set;}
-        private int _columns;
-        private int _rows;
+        public int Columns{get; private set;}
+        public int Rows{get; private set;}
         public Grid(int columns, int rows)
         {
-            _columns = columns;
-            _rows = rows;
+            Columns = columns;
+            Rows = rows;
 
             CreateBoardOfCells();
         }
 
         private void CreateBoardOfCells()
         {
-            Board = new Cell[_rows, _columns];
+            Board = new Cell[Rows, Columns];
 
-            for(int i = 0; i < _rows; i++)
+            for(int i = 0; i < Rows; i++)
             {
-                for(int j = 0; j < _columns; j++ )
+                for(int j = 0; j < Columns; j++ )
                 {
                     Board[i, j] = new Cell();
                 } 

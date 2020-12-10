@@ -6,6 +6,7 @@ namespace Conways.Game.Of.Life.Tests
 {
     public class GridTests
     {
+        DisplayFormatter displayFormatter = new DisplayFormatter();
 
         [Theory]
         [InlineData(3, 3)]
@@ -22,7 +23,12 @@ namespace Conways.Game.Of.Life.Tests
         [Fact]
         public void NewlyCreatedGridCanBeDisplayedToUser()
         {
-            
+            Grid grid = new Grid(3, 3);
+            var expectedOutput = " . " + " . " + " . \n" +
+                                 " . " + " . " + " . \n" +
+                                 " . " + " . " + " . \n" ;
+
+            Assert.Equal(expectedOutput, displayFormatter.GridToString(grid));
         }
         public bool CheckEachLocationIsACell(Grid grid)
         {
