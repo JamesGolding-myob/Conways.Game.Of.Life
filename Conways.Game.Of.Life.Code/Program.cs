@@ -6,7 +6,12 @@ namespace Conways.Game.Of.Life.Code
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+           ConsoleUI ui = new ConsoleUI(); 
+           var displayFormatter = new DisplayFormatter();
+           var inputConverter = new InputConverter();
+           Game life = new Game(ui, displayFormatter, inputConverter);
+
+           life.Run();
         }
     }
 }

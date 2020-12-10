@@ -5,7 +5,7 @@ namespace Conways.Game.Of.Life
         public Cell[,] Board {get; private set;}
         public int Columns{get; private set;}
         public int Rows{get; private set;}
-        public Grid(int columns, int rows)
+        public Grid(int rows, int columns)
         {
             Columns = columns;
             Rows = rows;

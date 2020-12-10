@@ -46,13 +46,6 @@ namespace Conways.Game.Of.Life.Tests
             }
             return result;
         }
-        // [Fact]
-        // public void PlayerSetsTheGridSizeAtBeginingOfTheGame()
-        // {
-        //     UI ui = new UI();
-        //     GOL game = new GOL(ui);
-        //     Grid grid = new Grid();
-
-        // }
+        
     }
 }
