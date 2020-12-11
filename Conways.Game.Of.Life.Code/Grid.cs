@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 namespace Conways.Game.Of.Life
 {
     public class Grid
@@ -23,6 +24,14 @@ namespace Conways.Game.Of.Life
                 {
                     Board[i, j] = new Cell();
                 } 
+            }
+        }
+
+        public void SetInitialGridState(List<(int,int)> locationsToBeAlive)
+        {
+            foreach (var location in locationsToBeAlive)
+            {
+                Board[location.Item1, location.Item2].IsAlive = true;   
             }
         }
     }

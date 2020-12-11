@@ -2,6 +2,6 @@ namespace Conways.Game.Of.Life
 {
     public class Cell
     {
-        bool IsAlive{get; set;}
+        public bool IsAlive{get; set;}
     }
 }
