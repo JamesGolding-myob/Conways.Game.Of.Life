@@ -10,10 +10,12 @@ namespace Conways.Game.Of.Life
             {
                 for(int j = 0; j < grid.Columns; j++ )
                 {
-                    if(j == grid.Columns - 1)
+
+                    if(LastColumn(j, grid.Columns))
                     {
                         output = output + " . \n";
                     }
+                    
                     else
                     {
                         output = output + " . ";
@@ -22,6 +24,11 @@ namespace Conways.Game.Of.Life
             }
 
             return output;
+        }
+
+        private bool LastColumn(int counter, int numberOfColumns)
+        {
+            return counter == numberOfColumns - 1;
         }
     }
 }

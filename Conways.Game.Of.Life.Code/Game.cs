@@ -1,3 +1,4 @@
+using System;
 namespace Conways.Game.Of.Life
 {
     public class Game
@@ -14,10 +15,15 @@ namespace Conways.Game.Of.Life
 
         public void Run()
         {
-            
-            var gridSize = _inputConverter.ConvertGridRowsAndColumns(_ui.GetUserInput());
+            var gridSize = GetGridSizeFromUser();
             Grid gameGrid = new Grid(gridSize.Item1, gridSize.Item2);
             _ui.Print(_formatter.GridToString(gameGrid));
+        }
+
+        private Tuple<int, int> GetGridSizeFromUser()
+        {
+            _ui.Print(OutputConstants.gridSizeInstructions);
+            return _inputConverter.ConvertGridRowsAndColumns(_ui.GetUserInput());
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Conways.Game.Of.Life
                                         " . " + " . " + " . " + " . \n" +
                                         " . " + " . " + " . " + " . \n";
 
-            SimpleUI ui = new SimpleUI();          
+            StubUI ui = new StubUI();          
             DisplayFormatter displayFormatter = new DisplayFormatter();
 
             Game game = new Game(ui, displayFormatter, inputConverter);
@@ -22,10 +22,8 @@ namespace Conways.Game.Of.Life
         }
 
         
-
-        
     }
-    public class SimpleUI : IUI
+    public class StubUI : IUI
     {
         public string LastString{get; private set;}
         public string GetUserInput()
