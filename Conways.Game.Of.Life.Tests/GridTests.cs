@@ -1,4 +1,4 @@
-using System;
+
 using Xunit;
 using System.Collections.Generic;
 
@@ -98,6 +98,7 @@ namespace Conways.Game.Of.Life.Tests
                 else
                 {
                     result = false;
+                    break;
                 }
             }
             return result;

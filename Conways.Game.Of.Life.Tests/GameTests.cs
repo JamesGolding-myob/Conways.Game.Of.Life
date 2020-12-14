@@ -23,7 +23,7 @@ namespace Conways.Game.Of.Life
 
         
     }
-    public class StubUI : IUI
+    public class StubUI : IUserInterface
     {
         public string LastString{get; private set;}
         public string GetUserInput()

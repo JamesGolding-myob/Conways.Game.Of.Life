@@ -1,7 +1,7 @@
 using System;
 namespace Conways.Game.Of.Life
 {
-    public class ConsoleUI : IUI
+    public class ConsoleUI : IUserInterface
     {
         public string GetUserInput()
         {

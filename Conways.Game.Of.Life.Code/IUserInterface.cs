@@ -1,6 +1,6 @@
 namespace Conways.Game.Of.Life
 {
-    public interface IUI
+    public interface IUserInterface
     {
         void Print(string output);
         string GetUserInput();
