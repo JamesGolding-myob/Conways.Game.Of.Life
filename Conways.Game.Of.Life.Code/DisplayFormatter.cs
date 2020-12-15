@@ -10,13 +10,13 @@ namespace Conways.Game.Of.Life
             string deadCellSymbol = " . ";
             string aliveCellSymbol = " A ";
 
-            for(int i = rowsMaximum; i >= 0; i--)
+            for(int rowIndex = rowsMaximum; rowIndex >= 0; rowIndex--)
             {
-                for(int j = 0; j <= columnsMaximum; j++ )
+                for(int columnIndex = 0; columnIndex <= columnsMaximum; columnIndex++ )
                 {
                     string symbolToAdd = deadCellSymbol;
 
-                    if(grid.Board[i, j].IsAlive)
+                    if(grid.Board[rowIndex, columnIndex].IsAlive)
                     {
                         symbolToAdd = aliveCellSymbol;
                     }
@@ -29,9 +29,5 @@ namespace Conways.Game.Of.Life
             return output;
         }
 
-        private bool IsLastInColumn(int counter, int columnsMaximum)
-        {
-            return counter == columnsMaximum;
-        }
     }
 }

@@ -26,6 +26,7 @@ namespace Conways.Game.Of.Life
 
             Assert.Equal(expectedOutput, converter.ConvertStartingGenerationInputToCoordinates(inputString));
         }
+
     }
 
 }
