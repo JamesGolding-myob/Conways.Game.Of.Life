@@ -1,24 +1,28 @@
 using Xunit;
+using System.Collections;
 namespace Conways.Game.Of.Life
 {
     public class GameTests
     {
         InputConverter inputConverter = new InputConverter();
+        DisplayFormatter displayFormatter = new DisplayFormatter();
+        StubUI ui = new StubUI(); 
 
         [Fact]
-        public void UserSetsSizeOfGridTo3x4AndSeesA3x4GridDisplayedToThem()
+        public void UserSetsTheTopRowforTheGridToBeAliveAndSeesThatPatternDisplayedToThem()//TODO: make this running end to end test
         {
-            string expectedLastString = " . " + " . " + " . " + " . \n" +
-                                        " . " + " . " + " . " + " . \n" +
-                                        " . " + " . " + " . " + " . \n";
-
-            StubUI ui = new StubUI();          
-            DisplayFormatter displayFormatter = new DisplayFormatter();
-
+             var expectedOutput =   " A " + " A " + " A " + " A \n" +
+                                    " . " + " . " + " . " + " . \n" +
+                                    " . " + " . " + " . " + " . \n";
+            
+ 
             Game game = new Game(ui, displayFormatter, inputConverter);
+            ui.AddToQueue("3,4");
+            ui.AddToQueue("2,0 2,1 2,2 2,3");
+
             game.Run();
-        
-            Assert.Equal(expectedLastString, ui.LastString);
+
+            Assert.Equal(expectedOutput, ui.LastString);
         }
 
         
@@ -26,14 +30,23 @@ namespace Conways.Game.Of.Life
     public class StubUI : IUserInterface
     {
         public string LastString{get; private set;}
+        private Queue myQ = new Queue();
         public string GetUserInput()
         {
-           return "3,4";
+           return (string)myQ.Dequeue();
         }
 
         public void Print(string output)
         {
             LastString = output;
         }
+
+        public void AddToQueue(string input)
+        {
+            myQ.Enqueue(input);
+        }
+
     }
+
+
 }

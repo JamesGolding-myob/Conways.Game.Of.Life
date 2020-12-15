@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System;
 namespace Conways.Game.Of.Life
 {
     public class Grid
@@ -27,7 +28,7 @@ namespace Conways.Game.Of.Life
             }
         }
 
-        public void SetInitialGridState(List<(int,int)> locationsToBeAlive)
+        public void SetInitialGridState(List<Tuple<int,int>> locationsToBeAlive)
         {
             foreach (var location in locationsToBeAlive)
             {

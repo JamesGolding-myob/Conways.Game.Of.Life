@@ -1,7 +1,7 @@
 
 using Xunit;
 using System.Collections.Generic;
-
+using System;
 namespace Conways.Game.Of.Life.Tests
 {
     public class GridTests
@@ -35,9 +35,9 @@ namespace Conways.Game.Of.Life.Tests
         public void GridCanSetSingleCellToInitiallyAlive()
         {
             Grid singleCellGrid = new Grid(1, 1);
-            var input = new List<(int,int)>
+            var input = new List<Tuple<int,int>>
             {
-                (0,0)
+                Tuple.Create(0,0)
             };
             singleCellGrid.SetInitialGridState(input);
 
@@ -57,9 +57,9 @@ namespace Conways.Game.Of.Life.Tests
         public void CanSetAnyCellInsideTheGridToAlive(int locationRow, int locationColumn)
         {
             Grid threeByThree = new Grid(3,3);
-            var input = new List<(int, int)>
+            var input = new List<Tuple<int, int>>
            {
-              (locationRow, locationColumn)
+              Tuple.Create(locationRow, locationColumn)
            };
 
             threeByThree.SetInitialGridState(input);
@@ -71,14 +71,14 @@ namespace Conways.Game.Of.Life.Tests
         public void CanSetMultipleCellsInAGridAlive()
         {
             Grid fiveByfive = new Grid(5, 5);
-            var input = new List<(int, int)>
+            var input = new List<Tuple<int, int>>
             {
-                (0, 0),
-                (2, 2),
-                (4, 1),
-                (0, 4),
-                (1, 0),
-                (3, 3)
+                Tuple.Create(0, 0),
+                Tuple.Create(2, 2),
+                Tuple.Create(4, 1),
+                Tuple.Create(0, 4),
+                Tuple.Create(1, 0),
+                Tuple.Create(3, 3)
             };
 
             fiveByfive.SetInitialGridState(input);
@@ -104,7 +104,7 @@ namespace Conways.Game.Of.Life.Tests
             return result;
         }
 
-        private bool ManyCellsAlive(Grid grid, List<(int, int)> inputs)
+        private bool ManyCellsAlive(Grid grid, List<Tuple<int, int>> inputs)
         {
             bool result = false;
 

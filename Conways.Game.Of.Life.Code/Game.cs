@@ -15,8 +15,13 @@ namespace Conways.Game.Of.Life
 
         public void Run()
         {
-            var gridSize = GetGridSizeFromUser();
-            Grid gameGrid = new Grid(gridSize.Item1, gridSize.Item2);
+            var gridDimensions = GetGridSizeFromUser();
+            Grid gameGrid = new Grid(gridDimensions.Item1, gridDimensions.Item2);
+            _ui.Print(_formatter.GridToString(gameGrid));
+
+            var initalState = _ui.GetUserInput();
+            var convertedInitialState = _inputConverter.ConvertStartingGenerationInputToCoordinates(initalState);
+            gameGrid.SetInitialGridState(convertedInitialState);
             _ui.Print(_formatter.GridToString(gameGrid));
         }
 
