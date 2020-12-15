@@ -15,9 +15,13 @@ namespace Conways.Game.Of.Life
 
         public void Run()
         {
-            var gridDimensions = GetGridSizeFromUser();
-            Grid gameGrid = new Grid(gridDimensions.Item1, gridDimensions.Item2);
-            _ui.Print(_formatter.GridToString(gameGrid));
+            _ui.Print(OutputConstants.gridSizeInstructions);
+            var rowColumnInputFromUser = _ui.GetUserInput();
+            (int row, int column) = _inputConverter.ConvertGridRowsAndColumns(rowColumnInputFromUser);
+
+            Grid gameGrid = new Grid(row, column);
+            var defaultGrid = _formatter.GridToString(gameGrid);
+            _ui.Print(defaultGrid);
 
             var initalState = _ui.GetUserInput();
             var convertedInitialState = _inputConverter.ConvertStartingGenerationInputToCoordinates(initalState);
@@ -25,10 +29,5 @@ namespace Conways.Game.Of.Life
             _ui.Print(_formatter.GridToString(gameGrid));
         }
 
-        private Tuple<int, int> GetGridSizeFromUser()
-        {
-            _ui.Print(OutputConstants.gridSizeInstructions);
-            return _inputConverter.ConvertGridRowsAndColumns(_ui.GetUserInput());
-        }
     }
 }

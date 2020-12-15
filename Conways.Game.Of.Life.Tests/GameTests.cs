@@ -9,7 +9,7 @@ namespace Conways.Game.Of.Life
         StubUI ui = new StubUI(); 
 
         [Fact]
-        public void UserSetsTheTopRowforTheGridToBeAliveAndSeesThatPatternDisplayedToThem()//TODO: make this running end to end test
+        public void UserSetsTheTopRowforTheGridToBeAliveAndSeesThatPatternDisplayedToThem()
         {
              var expectedOutput =   " A " + " A " + " A " + " A \n" +
                                     " . " + " . " + " . " + " . \n" +

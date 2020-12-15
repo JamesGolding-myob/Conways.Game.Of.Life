@@ -21,7 +21,7 @@ namespace Conways.Game.Of.Life.Tests
         }
 
         [Fact]
-        public void NewlyCreated3x3GridCanBeDisplayedToUser()
+        public void NewlyCreated3x3GridCanBeFormattedReadyToBeDisplayed()
         {
             Grid grid = new Grid(3, 3);
             var expectedOutput = " . " + " . " + " . \n" +

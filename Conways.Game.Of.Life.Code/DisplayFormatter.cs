@@ -15,20 +15,15 @@ namespace Conways.Game.Of.Life
                 for(int j = 0; j <= columnsMaximum; j++ )
                 {
                     string symbolToAdd = deadCellSymbol;
+
                     if(grid.Board[i, j].IsAlive)
                     {
                         symbolToAdd = aliveCellSymbol;
                     }
 
-                    if(IsLastInColumn(j, columnsMaximum))
-                    {
-                        output = output + $"{symbolToAdd}\n";
-                    }
-                    else
-                    {
-                        output = output + symbolToAdd; 
-                    }
+                    output += symbolToAdd;  
                 } 
+                output += "\n";
             }
 
             return output;

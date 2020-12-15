@@ -6,6 +6,7 @@ namespace Conways.Game.Of.Life
     public class DisplayFormatterTests
     {
         DisplayFormatter displayFormatter =  new DisplayFormatter();
+        
         [Fact]
         public void  ZeroZeroCellIsLocatedInBottomLeftCornerAfterFormatting()
         {

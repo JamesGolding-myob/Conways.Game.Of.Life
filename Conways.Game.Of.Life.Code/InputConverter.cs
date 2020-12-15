@@ -19,12 +19,10 @@ namespace Conways.Game.Of.Life
 
             foreach (var inputCoordinate in splitInput)
             {
-                var coordinatePair = inputCoordinate.Split(",", StringSplitOptions.None);    
-                coordinateList.Add(new Tuple<int, int>(Int32.Parse(coordinatePair[0]), Int32.Parse(coordinatePair[1])));
+                coordinateList.Add(ConvertGridRowsAndColumns(inputCoordinate));
             }
 
             return coordinateList;
-
         }
 
     }
