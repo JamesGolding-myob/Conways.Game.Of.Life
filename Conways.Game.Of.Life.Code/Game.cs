@@ -23,8 +23,8 @@ namespace Conways.Game.Of.Life
             var defaultGrid = _formatter.GridToString(gameGrid);
             _ui.Print(defaultGrid);
 
-            var initalState = _ui.GetUserInput();
-            var convertedInitialState = _inputConverter.ConvertStartingGenerationInputToCoordinates(initalState);
+            var initalStateFromUser = _ui.GetUserInput();
+            var convertedInitialState = _inputConverter.ConvertStartingGenerationInputToCoordinates(initalStateFromUser);
             gameGrid.SetInitialGridState(convertedInitialState);
             _ui.Print(_formatter.GridToString(gameGrid));
         }
