@@ -6,6 +6,7 @@ namespace Conways.Game.Of.Life.Tests
 {
     public class GridTests
     {
+        Grid twoByTwo = new Grid(2, 2);
         DisplayFormatter displayFormatter = new DisplayFormatter();
 
         [Theory]
@@ -41,7 +42,7 @@ namespace Conways.Game.Of.Life.Tests
             };
             singleCellGrid.SetInitialGridState(input);
 
-            Assert.True(singleCellGrid.Board[0, 0].IsAlive);
+            Assert.True(singleCellGrid.CurrentGeneration[0, 0].IsAlive);
         }
 
         [Theory]
@@ -64,7 +65,7 @@ namespace Conways.Game.Of.Life.Tests
 
             threeByThree.SetInitialGridState(input);
 
-            Assert.True(threeByThree.Board[locationRow, locationColumn].IsAlive);
+            Assert.True(threeByThree.CurrentGeneration[locationRow, locationColumn].IsAlive);
         }
 
         [Fact]
@@ -86,10 +87,70 @@ namespace Conways.Game.Of.Life.Tests
             Assert.True(ManyCellsAlive(fiveByfive, input));
         }
 
+        [Fact]
+        public void SingleLiveCellIn2x2GridDiesDueToLackOfNeighbours()
+        {  
+            var input = new List<Tuple<int, int>>
+            {
+                Tuple.Create(0, 0)
+            };
+
+            twoByTwo.SetInitialGridState(input);
+            var dyingCells = twoByTwo.ApplyRules();
+            twoByTwo.UpdateGeneration(dyingCells);
+
+            Assert.False(twoByTwo.CurrentGeneration[0, 0].IsAlive);
+        }
+
+        [Theory]
+        [InlineData(new int[]{0, 0, 1, 0})]
+        [InlineData(new int[]{0, 0, 0, 1})]
+        [InlineData(new int[]{0, 0, 1, 1})]
+        [InlineData(new int[]{1, 0, 0, 1})]
+        public void TwoCellsInA2x2GridSurviveDueToHavingTwoOrMoreNeighbours(int[] cellIndexes)
+        {
+            var input = new List<Tuple<int, int>>
+            {
+                Tuple.Create(cellIndexes[0], cellIndexes[1]),
+                Tuple.Create(cellIndexes[2], cellIndexes[3])
+            };
+
+            twoByTwo.SetInitialGridState(input);
+            var dyingCells = twoByTwo.ApplyRules();
+            twoByTwo.UpdateGeneration(dyingCells);
+
+            Assert.True(twoByTwo.CurrentGeneration[cellIndexes[0], cellIndexes[1]].IsAlive);
+            Assert.True(twoByTwo.CurrentGeneration[cellIndexes[2], cellIndexes[3]].IsAlive);
+        }
+
+        [Theory]
+        [InlineData(3,3)]
+        [InlineData(4,5)]
+        [InlineData(6,10)]
+        [InlineData(8,7)]
+        [InlineData(100,100)]
+        public void CellInAGridWithOneNeighbourDiesDueToNotEnoughNeighbours(int rows, int columns)
+        {
+            Grid genericGrid = new Grid(rows, columns);
+            var input = new List<Tuple<int, int>>
+            {
+                Tuple.Create(0, 0),
+                Tuple.Create(0, 1)
+            };
+
+            genericGrid.SetInitialGridState(input);
+            var dyingCells = genericGrid.ApplyRules();
+            genericGrid.UpdateGeneration(dyingCells);
+
+            Assert.False(genericGrid.CurrentGeneration[0, 0].IsAlive);
+            Assert.False(genericGrid.CurrentGeneration[0, 1].IsAlive);
+        }
+
+
         public bool CheckEachLocationIsACell(Grid grid)
         {
             bool result = false;
-            foreach (var item in grid.Board)
+            foreach (var item in grid.CurrentGeneration)
             {
                 if(item is Cell)
                 {
@@ -110,7 +171,7 @@ namespace Conways.Game.Of.Life.Tests
 
             foreach (var item in inputs)
             {
-                result = grid.Board[item.Item1, item.Item2].IsAlive;
+                result = grid.CurrentGeneration[item.Item1, item.Item2].IsAlive;
             }
             return result;
         }
