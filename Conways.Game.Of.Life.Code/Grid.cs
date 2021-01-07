@@ -5,6 +5,8 @@ namespace Conways.Game.Of.Life
 {
     public class Grid
     {
+        private const bool Alive = true;
+        private const bool Dead = false;
         public Cell[,] CurrentGeneration {get; private set;}
         public int NumberOfColumns{get; private set;}
         public int NumberOfRows{get; private set;}
@@ -40,6 +42,7 @@ namespace Conways.Game.Of.Life
         public void ApplyRulesToGrid()
         {
             List<Cell> cellsToBeDeadInNextGeneration = new List<Cell>();
+            List<Cell> cellsToBecomeAliveInNextGeneration = new List<Cell>();
 
             foreach(Cell cell in CurrentGeneration)
             {
@@ -47,18 +50,28 @@ namespace Conways.Game.Of.Life
                if(liveNeighbours.Count < 2)
                {
                    cellsToBeDeadInNextGeneration.Add(cell);
+               }
+
+               if(liveNeighbours.Count == 3)
+               {
+                   cellsToBecomeAliveInNextGeneration.Add(cell);
                }   
             }
-            UpdateGeneration(cellsToBeDeadInNextGeneration);
+            UpdateGeneration(cellsToBeDeadInNextGeneration, cellsToBecomeAliveInNextGeneration);
         }
 
-        public void UpdateGeneration(List<Cell> cellsToBeDeadNextGeneration)
+        public void UpdateGeneration(List<Cell> cellsToBeDeadNextGeneration, List<Cell> cellsToBecomeAlive)
         {
-            foreach (Cell cell in cellsToBeDeadNextGeneration)
-            {
-                CurrentGeneration[cell.GridLocation.Row, cell.GridLocation.Column].IsAlive = false;
-            }
+            UpdateCellStatus(cellsToBeDeadNextGeneration, Dead);
+            UpdateCellStatus(cellsToBecomeAlive, Alive);
+        }
 
+        private void UpdateCellStatus(List<Cell> cellsToChange, bool status)
+        {
+            foreach (Cell cell in cellsToChange)
+            {
+                CurrentGeneration[cell.GridLocation.Row, cell.GridLocation.Column].IsAlive = status;
+            }
         }
 
         private List<Cell> GetLiveNeighbours(Cell cellOfInterest)

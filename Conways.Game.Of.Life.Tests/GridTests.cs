@@ -161,6 +161,24 @@ namespace Conways.Game.Of.Life.Tests
             Assert.True(CellsAreAliveAfterTick(input, fourByFour));
         }
 
+        [Fact]
+        public void ADeadCellWithThreeLiveNeighboursBecomesAlive()
+        {
+            Grid threeByFour = new Grid(3, 4);
+            var input = new List<Tuple<int, int>>
+            {
+                Tuple.Create(2,1),
+                Tuple.Create(1, 0),
+                Tuple.Create(1, 2)
+            };
+
+            threeByFour.SetInitialGridState(input);
+            threeByFour.ApplyRulesToGrid();
+
+            Assert.True(threeByFour.CurrentGeneration[1,1].IsAlive);
+            Assert.True(threeByFour.CurrentGeneration[2,1].IsAlive);
+        }
+
         private int ManyCellsSetToAlive(Grid grid)
         {
             int result = 0;
