@@ -11,14 +11,14 @@ namespace Conways.Game.Of.Life
         [Fact]
         public void UserSetsTheTopRowforTheGridToBeAliveAndSeesThatPatternDisplayedToThem()
         {
-             var expectedOutput =   " A " + " A " + " A " + " A \n" +
+             var expectedOutput =   " . " + " . " + " . " + " A \n" +
                                     " . " + " . " + " . " + " . \n" +
                                     " . " + " . " + " . " + " . \n";
             
  
             Game game = new Game(ui, displayFormatter, inputConverter);
             ui.AddToQueue("3,4");
-            ui.AddToQueue("2,0 2,1 2,2 2,3");
+            ui.AddToQueue("2,0 2,2 2,3");
 
             game.Run();
 

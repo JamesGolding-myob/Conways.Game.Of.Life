@@ -7,30 +7,6 @@ namespace Conways.Game.Of.Life.Tests
     public class GridTests
     {
         Grid twoByTwo = new Grid(2, 2);
-        DisplayFormatter displayFormatter = new DisplayFormatter();
-
-        [Theory]
-        [InlineData(3, 3)]
-        [InlineData(1, 1)]
-        [InlineData(3, 2)]
-        [InlineData(10, 20)]
-        public void CanCreateAGridOfCellsAnySizeGreaterThanZero(int columns, int rows)
-        {
-            Grid grid = new Grid(columns, rows);
-
-            Assert.True(CheckEachLocationIsACell(grid));
-        }
-
-        [Fact]
-        public void NewlyCreated3x3GridCanBeFormattedReadyToBeDisplayed()
-        {
-            Grid grid = new Grid(3, 3);
-            var expectedOutput = " . " + " . " + " . \n" +
-                                 " . " + " . " + " . \n" +
-                                 " . " + " . " + " . \n" ;
-
-            Assert.Equal(expectedOutput, displayFormatter.GridToString(grid));
-        }
 
         [Fact]
         public void GridCanSetSingleCellToInitiallyAlive()
@@ -71,7 +47,7 @@ namespace Conways.Game.Of.Life.Tests
         [Fact]
         public void CanSetMultipleCellsInAGridAlive()
         {
-            Grid fiveByfive = new Grid(5, 5);
+            Grid fiveByFive = new Grid(5, 5);
             var input = new List<Tuple<int, int>>
             {
                 Tuple.Create(0, 0),
@@ -82,9 +58,9 @@ namespace Conways.Game.Of.Life.Tests
                 Tuple.Create(3, 3)
             };
 
-            fiveByfive.SetInitialGridState(input);
+            fiveByFive.SetInitialGridState(input);
 
-            Assert.True(ManyCellsAlive(fiveByfive, input));
+            Assert.Equal(6, ManyCellsSetToAlive(fiveByFive));
         }
 
         [Fact]
@@ -96,8 +72,7 @@ namespace Conways.Game.Of.Life.Tests
             };
 
             twoByTwo.SetInitialGridState(input);
-            var dyingCells = twoByTwo.ApplyRules();
-            twoByTwo.UpdateGeneration(dyingCells);
+            twoByTwo.ApplyRulesToGrid();
 
             Assert.False(twoByTwo.CurrentGeneration[0, 0].IsAlive);
         }
@@ -116,62 +91,100 @@ namespace Conways.Game.Of.Life.Tests
             };
 
             twoByTwo.SetInitialGridState(input);
-            var dyingCells = twoByTwo.ApplyRules();
-            twoByTwo.UpdateGeneration(dyingCells);
+            twoByTwo.ApplyRulesToGrid();  
 
             Assert.True(twoByTwo.CurrentGeneration[cellIndexes[0], cellIndexes[1]].IsAlive);
             Assert.True(twoByTwo.CurrentGeneration[cellIndexes[2], cellIndexes[3]].IsAlive);
         }
 
         [Theory]
-        [InlineData(3,3)]
-        [InlineData(4,5)]
-        [InlineData(6,10)]
-        [InlineData(8,7)]
-        [InlineData(100,100)]
-        public void CellInAGridWithOneNeighbourDiesDueToNotEnoughNeighbours(int rows, int columns)
+        [InlineData(3, 3, 0, 0)]
+        [InlineData(4, 5, 1, 0)]
+        [InlineData(6, 10, 1, 1)]
+        [InlineData(8, 7, 1, 2)]
+        [InlineData(100, 100, 0, 2)]
+        public void CellInAGridWithOneNeighbourDiesDueToNotEnoughNeighbours(int rows, int columns, int neighbourRow, int neighbourColumn)
         {
             Grid genericGrid = new Grid(rows, columns);
             var input = new List<Tuple<int, int>>
             {
-                Tuple.Create(0, 0),
+                Tuple.Create(neighbourRow, neighbourColumn),
                 Tuple.Create(0, 1)
             };
 
             genericGrid.SetInitialGridState(input);
-            var dyingCells = genericGrid.ApplyRules();
-            genericGrid.UpdateGeneration(dyingCells);
+            genericGrid.ApplyRulesToGrid();
 
-            Assert.False(genericGrid.CurrentGeneration[0, 0].IsAlive);
+            Assert.False(genericGrid.CurrentGeneration[neighbourRow, neighbourColumn].IsAlive);
             Assert.False(genericGrid.CurrentGeneration[0, 1].IsAlive);
         }
 
-
-        public bool CheckEachLocationIsACell(Grid grid)
+        [Theory]
+        [InlineData(0)]
+        [InlineData(1)]
+        [InlineData(2)]
+        public void AFullRowOfLiveCellsSurvivesDueToHorizontalWrappingOfNeighbours(int row)
         {
-            bool result = false;
-            foreach (var item in grid.CurrentGeneration)
+            Grid threeByThree = new Grid(3,3);
+            var input = new List<Tuple<int, int>>
             {
-                if(item is Cell)
+                Tuple.Create(row, 0),
+                Tuple.Create(row, 1),
+                Tuple.Create(row, 2)
+            };
+
+            threeByThree.SetInitialGridState(input);
+            threeByThree.ApplyRulesToGrid();
+
+            Assert.True(CellsAreAliveAfterTick(input, threeByThree));
+        }
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(1)]
+        [InlineData(2)]
+        [InlineData(3)]
+        public void AFullColumnOfLiveCellsSurvivesDueToVerticalWrappingOfNeighbours(int column)
+        {
+            Grid fourByFour = new Grid(4, 4);
+            var input = new List<Tuple<int, int>>
+            {
+                Tuple.Create(column, 0),
+                Tuple.Create(column, 1),
+                Tuple.Create(column, 2),
+                Tuple.Create(column, 3)
+            };
+
+            fourByFour.SetInitialGridState(input);
+            fourByFour.ApplyRulesToGrid();
+
+            Assert.True(CellsAreAliveAfterTick(input, fourByFour));
+        }
+
+        private int ManyCellsSetToAlive(Grid grid)
+        {
+            int result = 0;
+
+            foreach (var cell in grid.CurrentGeneration)
+            {
+                if(cell.IsAlive)
                 {
-                    result = true;
-                }
-                else
-                {
-                    result = false;
-                    break;
+                    result += 1;
                 }
             }
             return result;
         }
 
-        private bool ManyCellsAlive(Grid grid, List<Tuple<int, int>> inputs)
+        private bool CellsAreAliveAfterTick(List<Tuple<int, int>> cellsUnderTest, Grid gridUnderTest)
         {
             bool result = false;
-
-            foreach (var item in inputs)
+            for(int i = 0; i < cellsUnderTest.Count; i++)
             {
-                result = grid.CurrentGeneration[item.Item1, item.Item2].IsAlive;
+                result = gridUnderTest.CurrentGeneration[cellsUnderTest[i].Item1, cellsUnderTest[i].Item2].IsAlive;
+                if(result == false)
+                {
+                    break;
+                }
             }
             return result;
         }

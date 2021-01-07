@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System;
+using System.Linq;
 namespace Conways.Game.Of.Life
 {
     public class Grid
@@ -36,7 +37,7 @@ namespace Conways.Game.Of.Life
             }
         }
 
-        public List<Cell> ApplyRules()
+        public void ApplyRulesToGrid()
         {
             List<Cell> cellsToBeDeadInNextGeneration = new List<Cell>();
 
@@ -48,49 +49,35 @@ namespace Conways.Game.Of.Life
                    cellsToBeDeadInNextGeneration.Add(cell);
                }   
             }
-
-            return cellsToBeDeadInNextGeneration;
+            UpdateGeneration(cellsToBeDeadInNextGeneration);
         }
 
         public void UpdateGeneration(List<Cell> cellsToBeDeadNextGeneration)
         {
             foreach (Cell cell in cellsToBeDeadNextGeneration)
             {
-                CurrentGeneration[cell.Location.Item1, cell.Location.Item2].IsAlive = false;
+                CurrentGeneration[cell.GridLocation.Row, cell.GridLocation.Column].IsAlive = false;
             }
 
         }
 
         private List<Cell> GetLiveNeighbours(Cell cellOfInterest)
         {
-            var topRowIndex = NumberOfRows - 1;
-            var bottomRowIndex = 0;
-            var leftMostColumnIndex = 0;
-            var rightMostColumnIndex = NumberOfColumns - 1;
             
-            var rowAboveIndex = cellOfInterest.Location.Item1 + 1;
-            var rowBelowIndex = cellOfInterest.Location.Item1 - 1;
+            Cell topLeftNeighbour = GetNeighbour(cellOfInterest.GridLocation, NeighbourLocation.TopLeft);
+            Cell topCentreNeighbour = GetNeighbour(cellOfInterest.GridLocation, NeighbourLocation.TopCentre);
+            Cell topRightNeighbour = GetNeighbour(cellOfInterest.GridLocation, NeighbourLocation.TopRight);
 
-            var columnToTheLeftIndex = cellOfInterest.Location.Item2 - 1;
-            var columnToTheRightIndex = cellOfInterest.Location.Item2 + 1;
+            Cell rightNeighbour = GetNeighbour(cellOfInterest.GridLocation, NeighbourLocation.Right);
+            Cell leftNeighbour = GetNeighbour(cellOfInterest.GridLocation, NeighbourLocation.Left);
 
-            var currentColumnIndex = cellOfInterest.Location.Item2;
-            var currentRowIndex = cellOfInterest.Location.Item1;
+            Cell bottomLeftNeighbour = GetNeighbour(cellOfInterest.GridLocation, NeighbourLocation.BottomLeft);
+            Cell bottomCentreNeighbour = GetNeighbour(cellOfInterest.GridLocation, NeighbourLocation.BottomCentre);
+            Cell bottomRightNeighbour = GetNeighbour(cellOfInterest.GridLocation, NeighbourLocation.BottomRight);
 
-            Cell topLeftNeighbour = CurrentGeneration[rowAboveIndex <= topRowIndex ? rowAboveIndex : bottomRowIndex, columnToTheLeftIndex >= leftMostColumnIndex ? columnToTheLeftIndex: rightMostColumnIndex];
-            Cell topCenterNeighbour = CurrentGeneration[rowAboveIndex <= topRowIndex ? rowAboveIndex : bottomRowIndex, currentColumnIndex];
-            Cell topRightNeighbour = CurrentGeneration[rowAboveIndex <= topRowIndex ? rowAboveIndex : bottomRowIndex, columnToTheRightIndex < NumberOfColumns ? columnToTheRightIndex : leftMostColumnIndex];
-
-            Cell leftNeighbour = CurrentGeneration[currentRowIndex, columnToTheLeftIndex >= leftMostColumnIndex ? columnToTheLeftIndex : rightMostColumnIndex];
-            Cell rightNeighbour = CurrentGeneration[currentRowIndex, columnToTheRightIndex < NumberOfColumns ? columnToTheRightIndex : leftMostColumnIndex];
-
-            Cell bottomLeftNeighbour = CurrentGeneration[rowBelowIndex >= bottomRowIndex ? rowBelowIndex : topRowIndex, columnToTheLeftIndex >= leftMostColumnIndex ? columnToTheLeftIndex : rightMostColumnIndex];
-            Cell bottomCentreNeighbour = CurrentGeneration[rowBelowIndex >= bottomRowIndex ? rowBelowIndex : topRowIndex, currentColumnIndex];
-            Cell bottomRightNeighbour = CurrentGeneration[rowBelowIndex >= bottomRowIndex ? rowBelowIndex : topRowIndex, columnToTheRightIndex < NumberOfColumns ? columnToTheRightIndex : leftMostColumnIndex];
-            
             Cell[] neighbourhood = new Cell[]{
                 topLeftNeighbour, 
-                topCenterNeighbour,
+                topCentreNeighbour,
                 topRightNeighbour,
                 leftNeighbour,
                 rightNeighbour,
@@ -98,18 +85,84 @@ namespace Conways.Game.Of.Life
                 bottomRightNeighbour,
                 bottomCentreNeighbour};
 
-            List<Cell> AliveNeighbours = new List<Cell>();
+                var aliveNeighbours = neighbourhood.Where(x => x.IsAlive).ToList();
+               
+            return aliveNeighbours;
+        }
 
-            foreach (Cell cell in neighbourhood)
+        private Cell GetNeighbour(Location currentPosition, NeighbourLocation interestedPosition)
+        {
+            Cell neighbour;
+            int topRowIndex = NumberOfRows - 1;
+            int bottomRowIndex = 0;
+            int leftMostColumnIndex = 0;
+            int rightMostColumnIndex = NumberOfColumns - 1;
+
+            var columnToTheLeftIndex = currentPosition.Column - 1;
+            var columnToTheRightIndex = currentPosition.Column + 1;
+            var rowBelowIndex = currentPosition.Row - 1;
+            var rowAboveIndex = currentPosition.Row + 1;
+
+
+            switch (interestedPosition)
             {
-                if(cell.IsAlive)
+                case NeighbourLocation.TopLeft:
                 {
-                    AliveNeighbours.Add(cell);
+                    neighbour = CurrentGeneration[rowAboveIndex <= topRowIndex ? rowAboveIndex : bottomRowIndex, columnToTheLeftIndex >= leftMostColumnIndex ? columnToTheLeftIndex : rightMostColumnIndex];
+                    break;
+                }
+               
+                case NeighbourLocation.TopRight:
+                {
+                    neighbour = CurrentGeneration[rowAboveIndex <= topRowIndex ? rowAboveIndex : bottomRowIndex, columnToTheRightIndex <= rightMostColumnIndex ? columnToTheRightIndex : leftMostColumnIndex];
+                    break;
+                }
+
+                case NeighbourLocation.TopCentre:
+                {
+                    neighbour = CurrentGeneration[rowAboveIndex <= topRowIndex ? rowAboveIndex : bottomRowIndex, currentPosition.Column];
+                    break;
+                }
+
+                case NeighbourLocation.Right:
+                {
+                    neighbour = CurrentGeneration[currentPosition.Row, columnToTheRightIndex <= rightMostColumnIndex ? columnToTheRightIndex : leftMostColumnIndex];
+                    break;
+                }
+
+                case NeighbourLocation.Left:
+                {
+                    neighbour = CurrentGeneration[currentPosition.Row, columnToTheLeftIndex >= leftMostColumnIndex ? columnToTheLeftIndex : rightMostColumnIndex];
+                    break; 
+                }
+
+                case NeighbourLocation.BottomLeft:
+                {
+                    neighbour = CurrentGeneration[rowBelowIndex >= bottomRowIndex ? rowBelowIndex : topRowIndex, columnToTheLeftIndex >= leftMostColumnIndex ? columnToTheLeftIndex : rightMostColumnIndex];
+                    break;
+                }
+
+                 case NeighbourLocation.BottomRight:
+                {
+                    neighbour = CurrentGeneration[rowBelowIndex >= bottomRowIndex ? rowBelowIndex : topRowIndex, columnToTheRightIndex < NumberOfColumns ? columnToTheRightIndex : leftMostColumnIndex];
+                    break;
+                }
+
+                case NeighbourLocation.BottomCentre:
+                {
+                    neighbour = CurrentGeneration[rowBelowIndex >= bottomRowIndex ? rowBelowIndex : topRowIndex, currentPosition.Column];
+                    break;
+                }
+                
+                default:
+                {
+                    neighbour = CurrentGeneration[0,0];
+                    break;
                 }
             }
-            
-            return AliveNeighbours;
-        }
+            return neighbour;
+        } 
+       
        
     }
 }
