@@ -12,9 +12,9 @@ namespace Conways.Game.Of.Life.Tests
         public void GridCanSetSingleCellToInitiallyAlive()
         {
             Grid singleCellGrid = new Grid(1, 1);
-            var input = new List<Tuple<int,int>>
+            var input = new List<Location>
             {
-                Tuple.Create(0,0)
+                new Location(0,0)
             };
             singleCellGrid.SetInitialGridState(input);
 
@@ -34,9 +34,9 @@ namespace Conways.Game.Of.Life.Tests
         public void CanSetAnyCellInsideTheGridToAlive(int locationRow, int locationColumn)
         {
             Grid threeByThree = new Grid(3,3);
-            var input = new List<Tuple<int, int>>
+            var input = new List<Location>
            {
-              Tuple.Create(locationRow, locationColumn)
+              new Location(locationRow, locationColumn)
            };
 
             threeByThree.SetInitialGridState(input);
@@ -48,14 +48,14 @@ namespace Conways.Game.Of.Life.Tests
         public void CanSetMultipleCellsInAGridAlive()
         {
             Grid fiveByFive = new Grid(5, 5);
-            var input = new List<Tuple<int, int>>
+            var input = new List<Location>
             {
-                Tuple.Create(0, 0),
-                Tuple.Create(2, 2),
-                Tuple.Create(4, 1),
-                Tuple.Create(0, 4),
-                Tuple.Create(1, 0),
-                Tuple.Create(3, 3)
+                new Location(0, 0),
+                new Location(2, 2),
+                new Location(4, 1),
+                new Location(0, 4),
+                new Location(1, 0),
+                new Location(3, 3)
             };
 
             fiveByFive.SetInitialGridState(input);
@@ -66,9 +66,9 @@ namespace Conways.Game.Of.Life.Tests
         [Fact]
         public void SingleLiveCellIn2x2GridDiesDueToLackOfNeighbours()
         {  
-            var input = new List<Tuple<int, int>>
+            var input = new List<Location>
             {
-                Tuple.Create(0, 0)
+                new Location(0, 0)
             };
 
             twoByTwo.SetInitialGridState(input);
@@ -84,10 +84,10 @@ namespace Conways.Game.Of.Life.Tests
         [InlineData(new int[]{1, 0, 0, 1})]
         public void TwoCellsInA2x2GridSurviveDueToHavingTwoOrMoreNeighbours(int[] cellIndexes)
         {
-            var input = new List<Tuple<int, int>>
+            var input = new List<Location>
             {
-                Tuple.Create(cellIndexes[0], cellIndexes[1]),
-                Tuple.Create(cellIndexes[2], cellIndexes[3])
+                new Location(cellIndexes[0], cellIndexes[1]),
+                new Location(cellIndexes[2], cellIndexes[3])
             };
 
             twoByTwo.SetInitialGridState(input);
@@ -106,10 +106,10 @@ namespace Conways.Game.Of.Life.Tests
         public void CellInAGridWithOneNeighbourDiesDueToNotEnoughNeighbours(int rows, int columns, int neighbourRow, int neighbourColumn)
         {
             Grid genericGrid = new Grid(rows, columns);
-            var input = new List<Tuple<int, int>>
+            var input = new List<Location>
             {
-                Tuple.Create(neighbourRow, neighbourColumn),
-                Tuple.Create(0, 1)
+                new Location(neighbourRow, neighbourColumn),
+                new Location(0, 1)
             };
 
             genericGrid.SetInitialGridState(input);
@@ -120,17 +120,37 @@ namespace Conways.Game.Of.Life.Tests
         }
 
         [Theory]
+        [InlineData(0, 0, 0, 1, 0, 2)]
+        [InlineData(0, 0, 1, 0, 2, 0)]
+        [InlineData(3, 4, 4, 3, 5, 2)]
+        [InlineData(5, 3, 4, 4, 5, 5)]
+        public void CellWithTwoNeighboursLivesOn(int firstNeighbourRow, int firstNeighbourColumn, int cellOfInterestRow, int cellOfInterestColumn, int secondNeoighbourRow, int secondNeihbourColumn)
+        {
+            Grid sixBySix = new Grid(6,6);
+            var input = new List<Location>
+            {
+                new Location(firstNeighbourRow, firstNeighbourColumn),
+                new Location(cellOfInterestRow, cellOfInterestColumn),
+                new Location(secondNeoighbourRow, secondNeihbourColumn),
+            };
+            sixBySix.SetInitialGridState(input);
+            sixBySix.ApplyRulesToGrid();
+
+            Assert.True(sixBySix.CurrentGeneration[cellOfInterestRow, cellOfInterestColumn].IsAlive);
+        }
+
+        [Theory]
         [InlineData(0)]
         [InlineData(1)]
         [InlineData(2)]
         public void AFullRowOfLiveCellsSurvivesDueToHorizontalWrappingOfNeighbours(int row)
         {
             Grid threeByThree = new Grid(3,3);
-            var input = new List<Tuple<int, int>>
+            var input = new List<Location>
             {
-                Tuple.Create(row, 0),
-                Tuple.Create(row, 1),
-                Tuple.Create(row, 2)
+                new Location(row, 0),
+                new Location(row, 1),
+                new Location(row, 2)
             };
 
             threeByThree.SetInitialGridState(input);
@@ -147,12 +167,12 @@ namespace Conways.Game.Of.Life.Tests
         public void AFullColumnOfLiveCellsSurvivesDueToVerticalWrappingOfNeighbours(int column)
         {
             Grid fourByFour = new Grid(4, 4);
-            var input = new List<Tuple<int, int>>
+            var input = new List<Location>
             {
-                Tuple.Create(column, 0),
-                Tuple.Create(column, 1),
-                Tuple.Create(column, 2),
-                Tuple.Create(column, 3)
+                new Location(column, 0),
+                new Location(column, 1),
+                new Location(column, 2),
+                new Location(column, 3)
             };
 
             fourByFour.SetInitialGridState(input);
@@ -161,15 +181,16 @@ namespace Conways.Game.Of.Life.Tests
             Assert.True(CellsAreAliveAfterTick(input, fourByFour));
         }
 
-        [Fact]
+        [Theory]
+        [InlineData()]
         public void ADeadCellWithThreeLiveNeighboursBecomesAlive()
         {
             Grid threeByFour = new Grid(3, 4);
-            var input = new List<Tuple<int, int>>
+            var input = new List<Location>
             {
-                Tuple.Create(2,1),
-                Tuple.Create(1, 0),
-                Tuple.Create(1, 2)
+                new Location(2, 1),
+                new Location(1, 0),
+                new Location(1, 2)
             };
 
             threeByFour.SetInitialGridState(input);
@@ -193,12 +214,12 @@ namespace Conways.Game.Of.Life.Tests
             return result;
         }
 
-        private bool CellsAreAliveAfterTick(List<Tuple<int, int>> cellsUnderTest, Grid gridUnderTest)
+        private bool CellsAreAliveAfterTick(List<Location> cellsUnderTest, Grid gridUnderTest)
         {
             bool result = false;
             for(int i = 0; i < cellsUnderTest.Count; i++)
             {
-                result = gridUnderTest.CurrentGeneration[cellsUnderTest[i].Item1, cellsUnderTest[i].Item2].IsAlive;
+                result = gridUnderTest.CurrentGeneration[cellsUnderTest[i].Row, cellsUnderTest[i].Column].IsAlive;
                 if(result == false)
                 {
                     break;

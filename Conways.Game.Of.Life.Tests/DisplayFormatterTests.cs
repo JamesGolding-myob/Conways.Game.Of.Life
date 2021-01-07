@@ -17,13 +17,15 @@ namespace Conways.Game.Of.Life
 
             Assert.Equal(expectedOutput, displayFormatter.GridToString(grid));
         }
-        
+
         [Fact]
         public void  ZeroZeroCellIsLocatedInBottomLeftCornerAfterFormatting()
         {
             var expectedOutput = " .  .  . \n A  .  . \n";
-            List<Tuple<int, int>> zeroZeroAliveIntialState = new List<Tuple<int, int>>();
-            zeroZeroAliveIntialState.Add(Tuple.Create(0,0));
+            Location origin = new Location(0, 0);
+            
+            List<Location> zeroZeroAliveIntialState = new List<Location>();
+            zeroZeroAliveIntialState.Add(origin);
 
             Grid grid = new Grid(2, 3);
 

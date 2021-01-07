@@ -31,11 +31,11 @@ namespace Conways.Game.Of.Life
             }
         }
 
-        public void SetInitialGridState(List<Tuple<int, int>> locationsToBeAlive)
+        public void SetInitialGridState(List<Location> locationsToBeAlive)
         {
             foreach (var location in locationsToBeAlive)
             {
-                CurrentGeneration[location.Item1, location.Item2].IsAlive = true;   
+                CurrentGeneration[location.Row, location.Column].IsAlive = true;   
             }
         }
 
@@ -175,7 +175,6 @@ namespace Conways.Game.Of.Life
             }
             return neighbour;
         } 
-       
        
     }
 }

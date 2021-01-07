@@ -5,12 +5,12 @@ namespace Conways.Game.Of.Life
     {
         public bool IsAlive{get; set;} = false;
         
-        public Location GridLocation = new Location();
+        public Location GridLocation; 
 
         public Cell(int row, int column)
-        {
-            GridLocation.Row = row;
-            GridLocation.Column = column;
+        { 
+            GridLocation = new Location(row, column);
+          
         }
     }
 }

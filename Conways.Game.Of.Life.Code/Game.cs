@@ -17,9 +17,9 @@ namespace Conways.Game.Of.Life
         {
             _ui.Print(OutputConstants.gridSizeInstructions);
             var rowColumnInputFromUser = _ui.GetUserInput();
-            (int row, int column) = _inputConverter.ConvertGridRowsAndColumns(rowColumnInputFromUser);
+            var gridDimensions = _inputConverter.ConvertGridRowsAndColumns(rowColumnInputFromUser);
 
-            Grid gameGrid = new Grid(row, column);
+            Grid gameGrid = new Grid(gridDimensions.Row, gridDimensions.Column);
             var emptyStartingGrid = _formatter.GridToString(gameGrid);
             _ui.Print(emptyStartingGrid);
 

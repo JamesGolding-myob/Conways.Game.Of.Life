@@ -14,17 +14,30 @@ namespace Conways.Game.Of.Life
         [InlineData("10,2", 10, 2)]
         public void CommaSeperatednumbersAreConvertedForNumberOfColumnsAndRows(string input, int expectedRowOutput, int expectedColumnOutput)
         {
-            Assert.Equal(expectedRowOutput, converter.ConvertGridRowsAndColumns(input).Item1);
-            Assert.Equal(expectedColumnOutput, converter.ConvertGridRowsAndColumns(input).Item2);
+            Assert.Equal(expectedRowOutput, converter.ConvertGridRowsAndColumns(input).Row);
+            Assert.Equal(expectedColumnOutput, converter.ConvertGridRowsAndColumns(input).Column);
         }
 
         [Fact]
         public void MultipleCoordinatesOfCellIndicesSeperatedBySpacesIsConvertedToCoordinates()
         {
-            List<Tuple<int, int>> expectedOutput = new List<Tuple<int, int>>{Tuple.Create(1, 2), Tuple.Create(5, 6)};
+            List<Location> expectedOutput = new List<Location>{new Location(1, 2), new Location(5, 6)};
             var inputString = "1,2 5,6";
 
-            Assert.Equal(expectedOutput, converter.ConvertStartingGenerationInputToCoordinates(inputString));
+            Assert.True(ListValuesAreTheSame(expectedOutput, converter.ConvertStartingGenerationInputToCoordinates(inputString)));
+        }
+
+        public bool ListValuesAreTheSame(List<Location> expected, List<Location> converted)
+        { bool isSame = true;
+            for(int i = 0; i <= 1; i++)
+            {
+                if(expected[i].Row != converted[i].Row || expected[i].Column != converted[i].Column)
+                {
+                    isSame = false;
+                }
+            }
+            return isSame;
+
         }
 
     }
