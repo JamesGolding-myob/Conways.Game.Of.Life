@@ -1,8 +1,10 @@
+using System.Threading;
 using System;
 namespace Conways.Game.Of.Life
 {
     public class Game
     {
+        private const int _SleepTime = 1000;
         private IUserInterface _ui;
         private DisplayFormatter _formatter;
         private InputConverter _inputConverter;
@@ -31,14 +33,14 @@ namespace Conways.Game.Of.Life
             var convertedInitialState = _inputConverter.ConvertStartingGenerationInputToCoordinates(initalState);
             gameGrid.SetInitialGridState(convertedInitialState);
             _ui.Print(_formatter.GridToString(gameGrid));
-
             while(counter < _NumberOfTicks )
             {
+                Thread.Sleep(_SleepTime);
+                Console.Clear();
                 gameGrid.ApplyRulesToGrid();
-                    
                 _ui.Print(_formatter.GridToString(gameGrid));
+                  
                 counter++;
-
             }
         }
 
