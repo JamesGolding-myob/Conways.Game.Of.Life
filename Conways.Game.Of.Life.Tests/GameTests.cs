@@ -57,9 +57,25 @@ namespace Conways.Game.Of.Life
 
             Assert.Equal(expectedOutput, ui.LastString);
         }
- 
+
+        [Fact]
+        public void ThreeCellOscillatorIn4x4Grid()
+        {
+            var expectedOutput = " . " + " A " + " . " + " . \n" +
+                                 " . " + " A " + " . " + " . \n" +
+                                 " . " + " A " + " . " + " . \n" +
+                                 " . " + " . " + " . " + " . \n" ;
+
+            Game game = new Game(ui, displayFormatter, inputConverter);
+            ui.AddToQueue("4,4");
+            ui.AddToQueue("2,0 2,1 2,2");
+            game.Run();
+
+            Assert.Equal(expectedOutput, ui.LastString);
+        } 
     }
 
+    
     
     public class StubUI : IUserInterface
     {

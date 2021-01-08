@@ -220,7 +220,7 @@ namespace Conways.Game.Of.Life.Tests
         [Fact]
         public void ALiveCellWithMoreThenThreeLiveNeighboursBecomesDead()
         {
-            Grid fourByFour = new Grid(4, 4);
+            Grid fourByFour = new Grid(8, 8);
             var input = new List<Location>
             {
                 new Location(1,2),
@@ -233,6 +233,23 @@ namespace Conways.Game.Of.Life.Tests
             fourByFour.ApplyRulesToGrid();
 
             Assert.False(fourByFour.CurrentGeneration[2,2].IsAlive); 
+        }
+
+        [Fact]
+        public void GridFullOfLiveCellsAllDieDueToOverpopulation()
+        {
+            Grid fourByfour = new Grid(4, 4); 
+            var input = new List<Location>
+            {
+                new Location(0,0), new Location(0,1), new Location(0,2), new Location(0,3),
+                new Location(1,0), new Location(1,1), new Location(1,2), new Location(1,3),
+                new Location(2,0), new Location(2,1), new Location(2,2), new Location(2,3),
+                new Location(3,0), new Location(3,1), new Location(3,2), new Location(3,3)
+            };
+            fourByfour.SetInitialGridState(input);
+            fourByfour.ApplyRulesToGrid();
+
+            Assert.True(CellsAreDeadAfterTick(fourByfour));
         }
 
         private int ManyCellsSetToAlive(Grid grid)
@@ -260,6 +277,23 @@ namespace Conways.Game.Of.Life.Tests
                     break;
                 }
             }
+            return result;
+        }
+
+        private bool CellsAreDeadAfterTick(Grid gridUnderTest)
+        {
+            bool result = true;
+
+            foreach(Cell cell in gridUnderTest.CurrentGeneration)
+            {
+                if(cell.IsAlive)
+                {
+                    result = false;
+                    break;
+                }
+
+            }
+
             return result;
         }
         
