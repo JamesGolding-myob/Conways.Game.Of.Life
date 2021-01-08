@@ -1,7 +1,6 @@
 
 using Xunit;
 using System.Collections.Generic;
-using System;
 namespace Conways.Game.Of.Life.Tests
 {
     public class GridTests
@@ -80,9 +79,9 @@ namespace Conways.Game.Of.Life.Tests
         [Theory]
         [InlineData(new int[]{0, 0, 1, 0})]
         [InlineData(new int[]{0, 0, 0, 1})]
-        [InlineData(new int[]{0, 0, 1, 1})]
-        [InlineData(new int[]{1, 0, 0, 1})]
-        public void TwoCellsInA2x2GridSurviveDueToHavingTwoOrMoreNeighbours(int[] cellIndexes)
+        [InlineData(new int[]{0, 1, 1, 1})]
+        [InlineData(new int[]{1, 0, 1, 1})]
+        public void TwoCellsInA2x2GridSurviveDueToHavingTwoLiveNeighbours(int[] cellIndexes)
         {
             var input = new List<Location>
             {
@@ -95,6 +94,24 @@ namespace Conways.Game.Of.Life.Tests
 
             Assert.True(twoByTwo.CurrentGeneration[cellIndexes[0], cellIndexes[1]].IsAlive);
             Assert.True(twoByTwo.CurrentGeneration[cellIndexes[2], cellIndexes[3]].IsAlive);
+        }
+
+        [Theory]
+        [InlineData(new int[]{0, 0, 1, 1})]
+        [InlineData(new int[]{1, 0, 0, 1})]
+        public void TwoLiveCellsDiagionallyOppositeIn2x2GridDieDueToOverPopulation(int[] cellLocationIndexes)
+        {
+            var input = new List<Location>
+            {
+                new Location(cellLocationIndexes[0], cellLocationIndexes[1]),
+                new Location(cellLocationIndexes[2], cellLocationIndexes[3])
+            };
+
+            twoByTwo.SetInitialGridState(input);
+            twoByTwo.ApplyRulesToGrid();  
+
+            Assert.False(twoByTwo.CurrentGeneration[cellLocationIndexes[0], cellLocationIndexes[1]].IsAlive);
+            Assert.False(twoByTwo.CurrentGeneration[cellLocationIndexes[2], cellLocationIndexes[3]].IsAlive);   
         }
 
         [Theory]
@@ -198,6 +215,24 @@ namespace Conways.Game.Of.Life.Tests
 
             Assert.True(threeByFour.CurrentGeneration[1,1].IsAlive);
             Assert.True(threeByFour.CurrentGeneration[2,1].IsAlive);
+        }
+
+        [Fact]
+        public void ALiveCellWithMoreThenThreeLiveNeighboursBecomesDead()
+        {
+            Grid fourByFour = new Grid(4, 4);
+            var input = new List<Location>
+            {
+                new Location(1,2),
+                new Location(2,1),
+                new Location(2,2),
+                new Location(3,2),
+                new Location(2,3)
+            };
+            fourByFour.SetInitialGridState(input);
+            fourByFour.ApplyRulesToGrid();
+
+            Assert.False(fourByFour.CurrentGeneration[2,2].IsAlive); 
         }
 
         private int ManyCellsSetToAlive(Grid grid)

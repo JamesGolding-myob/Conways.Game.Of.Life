@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System;
 using System.Linq;
 namespace Conways.Game.Of.Life
 {
@@ -55,6 +54,11 @@ namespace Conways.Game.Of.Life
                if(liveNeighbours.Count == 3)
                {
                    cellsToBecomeAliveInNextGeneration.Add(cell);
+               }
+               
+               if(liveNeighbours.Count > 3)
+               {
+                   cellsToBeDeadInNextGeneration.Add(cell);
                }   
             }
             UpdateGeneration(cellsToBeDeadInNextGeneration, cellsToBecomeAliveInNextGeneration);
