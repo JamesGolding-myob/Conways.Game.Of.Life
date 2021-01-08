@@ -251,7 +251,7 @@ namespace Conways.Game.Of.Life.Tests
 
             Assert.True(CellsAreDeadAfterTick(fourByfour));
         }
-
+ 
         private int ManyCellsSetToAlive(Grid grid)
         {
             int result = 0;
@@ -291,9 +291,7 @@ namespace Conways.Game.Of.Life.Tests
                     result = false;
                     break;
                 }
-
             }
-
             return result;
         }
         

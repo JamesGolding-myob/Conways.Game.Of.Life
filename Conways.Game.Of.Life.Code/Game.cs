@@ -6,15 +6,18 @@ namespace Conways.Game.Of.Life
         private IUserInterface _ui;
         private DisplayFormatter _formatter;
         private InputConverter _inputConverter;
-        public Game(IUserInterface ui, DisplayFormatter displayFormatter, InputConverter inputConverter)
+        private int _NumberOfTicks {get; set;}
+        public Game(IUserInterface ui, DisplayFormatter displayFormatter, InputConverter inputConverter, int numberOfDesiredGenerations)
         {
             _ui = ui;
             _formatter = displayFormatter;
             _inputConverter = inputConverter;
+            _NumberOfTicks = numberOfDesiredGenerations;
         }
 
         public void Run()
         {
+            var counter = 0;
             _ui.Print(OutputConstants.gridSizeInstructions);
             var rowColumnInputFromUser = _ui.GetUserInput();
             var gridDimensions = _inputConverter.ConvertGridRowsAndColumns(rowColumnInputFromUser);
@@ -29,9 +32,14 @@ namespace Conways.Game.Of.Life
             gameGrid.SetInitialGridState(convertedInitialState);
             _ui.Print(_formatter.GridToString(gameGrid));
 
-           gameGrid.ApplyRulesToGrid();
-            
-            _ui.Print(_formatter.GridToString(gameGrid));
+            while(counter < _NumberOfTicks )
+            {
+                gameGrid.ApplyRulesToGrid();
+                    
+                _ui.Print(_formatter.GridToString(gameGrid));
+                counter++;
+
+            }
         }
 
     }

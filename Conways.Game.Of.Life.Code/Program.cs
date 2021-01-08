@@ -10,7 +10,7 @@ namespace Conways.Game.Of.Life.Code
            var displayFormatter = new DisplayFormatter();
            var inputConverter = new InputConverter();
            
-           Game life = new Game(ui, displayFormatter, inputConverter);
+           Game life = new Game(ui, displayFormatter, inputConverter, 3);
 
            life.Run();
         }

@@ -16,7 +16,7 @@ namespace Conways.Game.Of.Life
                                     " A " + " A " + " A " + " A \n" ;
             
  
-            Game game = new Game(ui, displayFormatter, inputConverter);
+            Game game = new Game(ui, displayFormatter, inputConverter, 1);
             ui.AddToQueue("3,4");
             ui.AddToQueue("2,0 2,1 2,2 2,3");
 
@@ -32,7 +32,7 @@ namespace Conways.Game.Of.Life
                                  " A " + " . " + " . " + " A \n" +
                                  " A " + " . " + " . " + " A \n" ;
 
-            Game game = new Game(ui, displayFormatter, inputConverter);
+            Game game = new Game(ui, displayFormatter, inputConverter, 1);
             ui.AddToQueue("3,4");
             ui.AddToQueue("2,3 1,0 0,3");
 
@@ -49,7 +49,7 @@ namespace Conways.Game.Of.Life
                                  " . " + " A " + " A " + " . \n" +
                                  " . " + " . " + " . " + " . \n" ;
 
-            Game game = new Game(ui, displayFormatter, inputConverter);
+            Game game = new Game(ui, displayFormatter, inputConverter, 3);
             ui.AddToQueue("4,4");
             ui.AddToQueue("1,1 2,1 1,2");
 
@@ -66,21 +66,37 @@ namespace Conways.Game.Of.Life
                                  " . " + " A " + " . " + " . \n" +
                                  " . " + " . " + " . " + " . \n" ;
 
-            Game game = new Game(ui, displayFormatter, inputConverter);
+            Game game = new Game(ui, displayFormatter, inputConverter, 3);
             ui.AddToQueue("4,4");
             ui.AddToQueue("2,0 2,1 2,2");
             game.Run();
 
             Assert.Equal(expectedOutput, ui.LastString);
         } 
+
+        [Fact]
+        public void multipleTicksinOneGame()
+       {
+           var expectedPrints = 7;
+           Game game = new Game(ui, displayFormatter, inputConverter, 3);
+          ui.AddToQueue("3,3");
+          ui.AddToQueue("0,0 1,1 2,2");
+          game.Run();
+
+           Assert.Equal(expectedPrints, ui.TimesCalled);
+       }
     }
 
-    
     
     public class StubUI : IUserInterface
     {
         public string LastString{get; private set;}
         private Queue myQ = new Queue();
+        public int TimesCalled {get; set;}
+        public StubUI()
+        {
+            TimesCalled = 0;
+        }
         public string GetUserInput()
         {
            return (string)myQ.Dequeue();
@@ -89,6 +105,7 @@ namespace Conways.Game.Of.Life
         public void Print(string output)
         {
             LastString = output;
+            TimesCalled++;
         }
 
         public void AddToQueue(string input)
