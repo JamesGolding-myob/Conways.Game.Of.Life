@@ -26,6 +26,15 @@ namespace Conways.Game.Of.Life
             Assert.True(ListValuesAreTheSame(expectedOutput, converter.ConvertStartingGenerationInputToCoordinates(inputString)));
         }
 
+        [Fact]
+        public void MaxGenerationsInputIsParsedToIntegerValue()
+        {
+            var input = "3";
+            var expectedOutput = 3;
+
+            Assert.Equal(expectedOutput, converter.ConvertMaxGenerations(input));
+        }
+
         public bool ListValuesAreTheSame(List<Location> expected, List<Location> converted)
         { bool isSame = true;
             for(int i = 0; i <= 1; i++)

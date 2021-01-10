@@ -16,9 +16,10 @@ namespace Conways.Game.Of.Life
                                     " A " + " A " + " A " + " A \n" ;
             
  
-            Game game = new Game(ui, displayFormatter, inputConverter, 1);
+            Game game = new Game(ui, displayFormatter, inputConverter);
             ui.AddToQueue("3,4");
             ui.AddToQueue("2,0 2,1 2,2 2,3");
+            ui.AddToQueue("1");
 
             game.Run();
 
@@ -32,9 +33,10 @@ namespace Conways.Game.Of.Life
                                  " A " + " . " + " . " + " A \n" +
                                  " A " + " . " + " . " + " A \n" ;
 
-            Game game = new Game(ui, displayFormatter, inputConverter, 1);
+            Game game = new Game(ui, displayFormatter, inputConverter);
             ui.AddToQueue("3,4");
             ui.AddToQueue("2,3 1,0 0,3");
+            ui.AddToQueue("1");
 
             game.Run();
 
@@ -49,9 +51,10 @@ namespace Conways.Game.Of.Life
                                  " . " + " A " + " A " + " . \n" +
                                  " . " + " . " + " . " + " . \n" ;
 
-            Game game = new Game(ui, displayFormatter, inputConverter, 3);
+            Game game = new Game(ui, displayFormatter, inputConverter);
             ui.AddToQueue("4,4");
             ui.AddToQueue("1,1 2,1 1,2");
+            ui.AddToQueue("4");
 
             game.Run();
 
@@ -66,21 +69,24 @@ namespace Conways.Game.Of.Life
                                  " . " + " A " + " . " + " . \n" +
                                  " . " + " . " + " . " + " . \n" ;
 
-            Game game = new Game(ui, displayFormatter, inputConverter, 3);
+            Game game = new Game(ui, displayFormatter, inputConverter);
             ui.AddToQueue("4,4");
             ui.AddToQueue("2,0 2,1 2,2");
+            ui.AddToQueue("1");
             game.Run();
 
             Assert.Equal(expectedOutput, ui.LastString);
         } 
 
-        [Fact]
-        public void multipleTicksinOneGame()
+        [Theory]
+        [InlineData("3", 3)]
+        public void multipleTicksinOneGameSetByTheUser(string input, int numberOfGenerations)
        {
-           var expectedPrints = 7;
-           Game game = new Game(ui, displayFormatter, inputConverter, 3);
+           var expectedPrints = numberOfGenerations + 5;
+           Game game = new Game(ui, displayFormatter, inputConverter);
           ui.AddToQueue("3,3");
           ui.AddToQueue("0,0 1,1 2,2");
+          ui.AddToQueue(input);
           game.Run();
 
            Assert.Equal(expectedPrints, ui.TimesCalled);

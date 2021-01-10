@@ -9,12 +9,12 @@ namespace Conways.Game.Of.Life
         private DisplayFormatter _formatter;
         private InputConverter _inputConverter;
         private int _numberOfTicks;
-        public Game(IUserInterface ui, DisplayFormatter displayFormatter, InputConverter inputConverter, int numberOfDesiredGenerations)
+        public Game(IUserInterface ui, DisplayFormatter displayFormatter, InputConverter inputConverter)
         {
             _ui = ui;
             _formatter = displayFormatter;
             _inputConverter = inputConverter;
-            _numberOfTicks = numberOfDesiredGenerations;
+           
         }
 
         public void Run()
@@ -33,6 +33,9 @@ namespace Conways.Game.Of.Life
             var convertedInitialState = _inputConverter.ConvertStartingGenerationInputToCoordinates(initalState);
             gameGrid.SetInitialGridState(convertedInitialState);
             _ui.Print(_formatter.GridToString(gameGrid));
+
+            _ui.Print(OutputConstants.maxGenerationInstructions);
+            _numberOfTicks = _inputConverter.ConvertMaxGenerations(_ui.GetUserInput());
             while(counter < _numberOfTicks )
             {
                 Thread.Sleep(_SleepTime);

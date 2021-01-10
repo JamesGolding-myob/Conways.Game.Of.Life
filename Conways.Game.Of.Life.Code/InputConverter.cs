@@ -24,5 +24,10 @@ namespace Conways.Game.Of.Life
             return coordinateList;
         }
 
+        public int ConvertMaxGenerations(string input)
+        {
+            return Int32.Parse(input);
+        }
+
     }
 }

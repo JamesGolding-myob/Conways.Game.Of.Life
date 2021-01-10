@@ -198,22 +198,23 @@ namespace Conways.Game.Of.Life.Tests
         }
 
         [Theory]
-        [InlineData()]
-        public void ADeadCellWithThreeLiveNeighboursBecomesAlive()
+        [InlineData(new int[]{0,2,1,3,2,2}, new int[]{1,2})]
+        [InlineData(new int[]{2,1,1,0,1,2}, new int[]{1,1})]
+        [InlineData(new int[]{0,3,1,0,2,3}, new int[]{1,3})]
+        public void ADeadCellWithThreeLiveNeighboursBecomesAlive(int[] neighbourCoordinates, int[] cellOfinterestCoordinates)
         {
             Grid threeByFour = new Grid(3, 4);
             var input = new List<Location>
             {
-                new Location(2, 1),
-                new Location(1, 0),
-                new Location(1, 2)
+                new Location(neighbourCoordinates[0], neighbourCoordinates[1]),
+                new Location(neighbourCoordinates[2], neighbourCoordinates[3]),
+                new Location(neighbourCoordinates[4], neighbourCoordinates[5])
             };
 
             threeByFour.SetInitialGridState(input);
             threeByFour.ApplyRulesToGrid();
 
-            Assert.True(threeByFour.CurrentGeneration[1,1].IsAlive);
-            Assert.True(threeByFour.CurrentGeneration[2,1].IsAlive);
+            Assert.True(threeByFour.CurrentGeneration[cellOfinterestCoordinates[0],cellOfinterestCoordinates[1]].IsAlive);
         }
 
         [Fact]
