@@ -1,4 +1,3 @@
-
 using Xunit;
 using System.Collections.Generic;
 namespace Conways.Game.Of.Life.Tests

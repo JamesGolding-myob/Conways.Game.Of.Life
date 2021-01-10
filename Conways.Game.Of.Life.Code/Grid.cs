@@ -6,6 +6,9 @@ namespace Conways.Game.Of.Life
     {
         private const bool Alive = true;
         private const bool Dead = false;
+        private const int NeighbourLimitToBecomeAlive = 3;
+        private const int NeighbourLimitForOverPopulation = 3;
+        private const int NeighbourLimitForUnderPopulation = 2;
         public Cell[,] CurrentGeneration {get; private set;}
         public int NumberOfColumns{get; private set;}
         public int NumberOfRows{get; private set;}
@@ -34,7 +37,7 @@ namespace Conways.Game.Of.Life
         {
             foreach (var location in locationsToBeAlive)
             {
-                CurrentGeneration[location.Row, location.Column].IsAlive = true;   
+                CurrentGeneration[location.Row, location.Column].IsAlive = Alive;   
             }
         }
 
@@ -46,17 +49,17 @@ namespace Conways.Game.Of.Life
             foreach(Cell cell in CurrentGeneration)
             {
                 List<Cell> liveNeighbours = GetLiveNeighbours(cell);
-               if(liveNeighbours.Count < 2)
+               if(liveNeighbours.Count < NeighbourLimitForUnderPopulation)
                {
                    cellsToBeDeadInNextGeneration.Add(cell);
                }
 
-               if(liveNeighbours.Count == 3)
+               if(liveNeighbours.Count == NeighbourLimitToBecomeAlive)
                {
                    cellsToBecomeAliveInNextGeneration.Add(cell);
                }
                
-               if(liveNeighbours.Count > 3)
+               if(liveNeighbours.Count > NeighbourLimitForOverPopulation)
                {
                    cellsToBeDeadInNextGeneration.Add(cell);
                }   
