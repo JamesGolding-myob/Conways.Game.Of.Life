@@ -1,20 +1,20 @@
-using System.Threading;
 using System;
 namespace Conways.Game.Of.Life
 {
     public class Game
     {
-        private const int _SleepTime = 1000;
+
         private IUserInterface _ui;
         private DisplayFormatter _formatter;
         private InputConverter _inputConverter;
+        private Sleeper _displayDelayer;
         private int _numberOfTicks;
-        public Game(IUserInterface ui, DisplayFormatter displayFormatter, InputConverter inputConverter)
+        public Game(IUserInterface ui, DisplayFormatter displayFormatter, InputConverter inputConverter, Sleeper sleeper)
         {
             _ui = ui;
             _formatter = displayFormatter;
             _inputConverter = inputConverter;
-           
+           _displayDelayer = sleeper;
         }
 
         public void Run()
@@ -38,7 +38,7 @@ namespace Conways.Game.Of.Life
             _numberOfTicks = _inputConverter.ConvertMaxGenerations(_ui.GetUserInput());
             while(counter < _numberOfTicks )
             {
-                Thread.Sleep(_SleepTime);
+                _displayDelayer.delayOutPut();
                 Console.Clear();
                 gameGrid.ApplyRulesToGrid();
                 _ui.Print(_formatter.GridToString(gameGrid));

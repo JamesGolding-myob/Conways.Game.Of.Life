@@ -7,6 +7,7 @@ namespace Conways.Game.Of.Life
         InputConverter inputConverter = new InputConverter();
         DisplayFormatter displayFormatter = new DisplayFormatter();
         StubUI ui = new StubUI(); 
+        Sleeper delayer = new Sleeper(1);
 
         [Fact]
         public void UserInitiallySetsTopRowAliveAllCellsAreAliveInNextGeneration()
@@ -16,7 +17,7 @@ namespace Conways.Game.Of.Life
                                     " A " + " A " + " A " + " A \n" ;
             
  
-            Game game = new Game(ui, displayFormatter, inputConverter);
+            Game game = new Game(ui, displayFormatter, inputConverter, delayer);
             ui.AddToQueue("3,4");
             ui.AddToQueue("2,0 2,1 2,2 2,3");
             ui.AddToQueue("1");
@@ -33,7 +34,7 @@ namespace Conways.Game.Of.Life
                                  " A " + " . " + " . " + " A \n" +
                                  " A " + " . " + " . " + " A \n" ;
 
-            Game game = new Game(ui, displayFormatter, inputConverter);
+            Game game = new Game(ui, displayFormatter, inputConverter, delayer);
             ui.AddToQueue("3,4");
             ui.AddToQueue("2,3 1,0 0,3");
             ui.AddToQueue("1");
@@ -51,7 +52,7 @@ namespace Conways.Game.Of.Life
                                  " . " + " A " + " A " + " . \n" +
                                  " . " + " . " + " . " + " . \n" ;
 
-            Game game = new Game(ui, displayFormatter, inputConverter);
+            Game game = new Game(ui, displayFormatter, inputConverter, delayer);
             ui.AddToQueue("4,4");
             ui.AddToQueue("1,1 2,1 1,2");
             ui.AddToQueue("4");
@@ -69,7 +70,7 @@ namespace Conways.Game.Of.Life
                                  " . " + " A " + " . " + " . \n" +
                                  " . " + " . " + " . " + " . \n" ;
 
-            Game game = new Game(ui, displayFormatter, inputConverter);
+            Game game = new Game(ui, displayFormatter, inputConverter, delayer);
             ui.AddToQueue("4,4");
             ui.AddToQueue("2,0 2,1 2,2");
             ui.AddToQueue("1");
@@ -80,10 +81,14 @@ namespace Conways.Game.Of.Life
 
         [Theory]
         [InlineData("3", 3)]
+        [InlineData("1", 1)]
+        [InlineData("10", 10)]
+       [InlineData("100", 100)] 
         public void multipleTicksinOneGameSetByTheUser(string input, int numberOfGenerations)
        {
-           var expectedPrints = numberOfGenerations + 5;
-           Game game = new Game(ui, displayFormatter, inputConverter);
+           int numberOfPrintStatementsInGameSetUp = 5;
+           var expectedPrints = numberOfGenerations + numberOfPrintStatementsInGameSetUp;
+           Game game = new Game(ui, displayFormatter, inputConverter, delayer);
           ui.AddToQueue("3,3");
           ui.AddToQueue("0,0 1,1 2,2");
           ui.AddToQueue(input);
