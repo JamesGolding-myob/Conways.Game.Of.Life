@@ -128,49 +128,49 @@ namespace Conways.Game.Of.Life
             {
                 case NeighbourLocation.TopLeft:
                 {
-                    neighbour = CurrentGeneration[rowAboveIndex <= topRowIndex ? rowAboveIndex : bottomRowIndex, columnToTheLeftIndex >= leftMostColumnIndex ? columnToTheLeftIndex : rightMostColumnIndex];
+                    neighbour = CurrentGeneration[TopWrap(currentPosition.Row, topRowIndex, bottomRowIndex), LeftWrap(currentPosition.Column, leftMostColumnIndex, rightMostColumnIndex)];
                     break;
                 }
                
                 case NeighbourLocation.TopRight:
                 {
-                    neighbour = CurrentGeneration[rowAboveIndex <= topRowIndex ? rowAboveIndex : bottomRowIndex, columnToTheRightIndex <= rightMostColumnIndex ? columnToTheRightIndex : leftMostColumnIndex];
+                    neighbour = CurrentGeneration[TopWrap(currentPosition.Row, topRowIndex, bottomRowIndex), RightWrap(currentPosition.Column, rightMostColumnIndex, leftMostColumnIndex)];
                     break;
                 }
 
                 case NeighbourLocation.TopCentre:
                 {
-                    neighbour = CurrentGeneration[rowAboveIndex <= topRowIndex ? rowAboveIndex : bottomRowIndex, currentPosition.Column];
+                    neighbour = CurrentGeneration[TopWrap(currentPosition.Row, topRowIndex, bottomRowIndex), currentPosition.Column];
                     break;
                 }
 
                 case NeighbourLocation.Right:
                 {
-                    neighbour = CurrentGeneration[currentPosition.Row, columnToTheRightIndex <= rightMostColumnIndex ? columnToTheRightIndex : leftMostColumnIndex];
+                    neighbour = CurrentGeneration[currentPosition.Row, RightWrap(currentPosition.Column, rightMostColumnIndex, leftMostColumnIndex)];
                     break;
                 }
 
                 case NeighbourLocation.Left:
                 {
-                    neighbour = CurrentGeneration[currentPosition.Row, columnToTheLeftIndex >= leftMostColumnIndex ? columnToTheLeftIndex : rightMostColumnIndex];
+                    neighbour = CurrentGeneration[currentPosition.Row, LeftWrap(currentPosition.Column, leftMostColumnIndex, rightMostColumnIndex)];
                     break; 
                 }
 
                 case NeighbourLocation.BottomLeft:
                 {
-                    neighbour = CurrentGeneration[rowBelowIndex >= bottomRowIndex ? rowBelowIndex : topRowIndex, columnToTheLeftIndex >= leftMostColumnIndex ? columnToTheLeftIndex : rightMostColumnIndex];
+                    neighbour = CurrentGeneration[BottomWrap(currentPosition.Row, bottomRowIndex, topRowIndex), LeftWrap(currentPosition.Column, leftMostColumnIndex, rightMostColumnIndex)];
                     break;
                 }
 
                  case NeighbourLocation.BottomRight:
                 {
-                    neighbour = CurrentGeneration[rowBelowIndex >= bottomRowIndex ? rowBelowIndex : topRowIndex, columnToTheRightIndex < NumberOfColumns ? columnToTheRightIndex : leftMostColumnIndex];
+                    neighbour = CurrentGeneration[BottomWrap(currentPosition.Row, bottomRowIndex, topRowIndex), RightWrap(currentPosition.Column, rightMostColumnIndex, leftMostColumnIndex)];
                     break;
                 }
 
                 case NeighbourLocation.BottomCentre:
                 {
-                    neighbour = CurrentGeneration[rowBelowIndex >= bottomRowIndex ? rowBelowIndex : topRowIndex, currentPosition.Column];
+                    neighbour = CurrentGeneration[BottomWrap(currentPosition.Row, bottomRowIndex, topRowIndex), currentPosition.Column];
                     break;
                 }
                 
@@ -182,6 +182,34 @@ namespace Conways.Game.Of.Life
             }
             return neighbour;
         } 
+
+        private int TopWrap(int location, int topRowIndex, int bottomRowIndex)
+        {
+            var aboveRow = location + 1;
+
+            return aboveRow <= topRowIndex ? aboveRow : bottomRowIndex;
+        }
+
+        private int LeftWrap(int location, int leftMostColumnIndex, int rightMostIndex)
+        {
+            var columnToTheLeft = location - 1;
+
+            return columnToTheLeft >= leftMostColumnIndex ? columnToTheLeft : rightMostIndex;
+        }
+
+        private int BottomWrap(int location, int bottomRowIndex, int topRowIndex)
+        {
+            var rowBelow = location - 1;
+
+            return rowBelow >= bottomRowIndex ? rowBelow : topRowIndex;
+        }
+
+        private int RightWrap(int location, int rightMostColumnIndex, int leftMostColumnIndex)
+        {
+            var columnToTheRightIndex = location + 1;
+
+            return columnToTheRightIndex <= rightMostColumnIndex ? columnToTheRightIndex : leftMostColumnIndex;
+        }
        
     }
 }
