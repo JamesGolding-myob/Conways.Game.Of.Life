@@ -1,12 +1,12 @@
 using System.Threading;
 namespace Conways.Game.Of.Life
 {
-    public class Sleeper
+    public class Delayer
     {
         private int _sleepTime;
-        public Sleeper(int delay = 1000)
+        public Delayer(int milliSecDelay = 1000)
         {
-            _sleepTime = delay;
+            _sleepTime = milliSecDelay;
         }
         public void delayOutPut()
         {

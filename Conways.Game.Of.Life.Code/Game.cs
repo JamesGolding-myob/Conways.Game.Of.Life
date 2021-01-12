@@ -7,14 +7,14 @@ namespace Conways.Game.Of.Life
         private IUserInterface _ui;
         private DisplayFormatter _formatter;
         private InputConverter _inputConverter;
-        private Sleeper _displayDelayer;
+        private Delayer _displayDelayer;
         private int _numberOfTicks;
-        public Game(IUserInterface ui, DisplayFormatter displayFormatter, InputConverter inputConverter, Sleeper sleeper)
+        public Game(IUserInterface ui, DisplayFormatter displayFormatter, InputConverter inputConverter, Delayer delayer)
         {
             _ui = ui;
             _formatter = displayFormatter;
             _inputConverter = inputConverter;
-           _displayDelayer = sleeper;
+           _displayDelayer = delayer;
         }
 
         public void Run()

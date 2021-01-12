@@ -7,7 +7,7 @@ namespace Conways.Game.Of.Life
         InputConverter inputConverter = new InputConverter();
         DisplayFormatter displayFormatter = new DisplayFormatter();
         StubUI ui = new StubUI(); 
-        Sleeper delayer = new Sleeper(1);
+        Delayer delayer = new Delayer(1);
 
         [Fact]
         public void UserInitiallySetsTopRowAliveAllCellsAreAliveInNextGeneration()

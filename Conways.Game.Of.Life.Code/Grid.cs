@@ -128,52 +128,44 @@ namespace Conways.Game.Of.Life
             {
                 case NeighbourLocation.TopLeft:
                 {
-                    neighbour = CurrentGeneration[WrappedIndexFinder(rowAboveIndex, topRowIndex, bottomRowIndex), WrappedIndexFinder(columnToTheLeftIndex, rightMostColumnIndex, leftMostColumnIndex)];
+                    neighbour = CurrentGeneration[GetWrappedIndex(rowAboveIndex, topRowIndex, bottomRowIndex), GetWrappedIndex(columnToTheLeftIndex, rightMostColumnIndex, leftMostColumnIndex)];
                     break;
                 }
-               
                 case NeighbourLocation.TopRight:
                 {
-                    neighbour = CurrentGeneration[WrappedIndexFinder(rowAboveIndex, topRowIndex, bottomRowIndex), WrappedIndexFinder(columnToTheRightIndex, rightMostColumnIndex, leftMostColumnIndex)];
+                    neighbour = CurrentGeneration[GetWrappedIndex(rowAboveIndex, topRowIndex, bottomRowIndex), GetWrappedIndex(columnToTheRightIndex, rightMostColumnIndex, leftMostColumnIndex)];
                     break;
                 }
-
                 case NeighbourLocation.TopCentre:
                 {
-                    neighbour = CurrentGeneration[WrappedIndexFinder(rowAboveIndex, topRowIndex, bottomRowIndex), currentPosition.Column];
+                    neighbour = CurrentGeneration[GetWrappedIndex(rowAboveIndex, topRowIndex, bottomRowIndex), currentPosition.Column];
                     break;
                 }
-
                 case NeighbourLocation.Right:
                 {
-                    neighbour = CurrentGeneration[currentPosition.Row, WrappedIndexFinder(columnToTheRightIndex, rightMostColumnIndex, leftMostColumnIndex)];
+                    neighbour = CurrentGeneration[currentPosition.Row, GetWrappedIndex(columnToTheRightIndex, rightMostColumnIndex, leftMostColumnIndex)];
                     break;
                 }
-
                 case NeighbourLocation.Left:
                 {
-                    neighbour = CurrentGeneration[currentPosition.Row, WrappedIndexFinder(columnToTheLeftIndex, rightMostColumnIndex, leftMostColumnIndex)];
+                    neighbour = CurrentGeneration[currentPosition.Row, GetWrappedIndex(columnToTheLeftIndex, rightMostColumnIndex, leftMostColumnIndex)];
                     break; 
                 }
-
                 case NeighbourLocation.BottomLeft:
                 {
-                    neighbour = CurrentGeneration[WrappedIndexFinder(rowBelowIndex, topRowIndex, bottomRowIndex), WrappedIndexFinder(columnToTheLeftIndex, rightMostColumnIndex, leftMostColumnIndex)];
+                    neighbour = CurrentGeneration[GetWrappedIndex(rowBelowIndex, topRowIndex, bottomRowIndex), GetWrappedIndex(columnToTheLeftIndex, rightMostColumnIndex, leftMostColumnIndex)];
                     break;
                 }
-
                  case NeighbourLocation.BottomRight:
                 {
-                    neighbour = CurrentGeneration[WrappedIndexFinder(rowBelowIndex, topRowIndex, bottomRowIndex), WrappedIndexFinder(columnToTheRightIndex, rightMostColumnIndex, leftMostColumnIndex)];
+                    neighbour = CurrentGeneration[GetWrappedIndex(rowBelowIndex, topRowIndex, bottomRowIndex), GetWrappedIndex(columnToTheRightIndex, rightMostColumnIndex, leftMostColumnIndex)];
                     break;
                 }
-
                 case NeighbourLocation.BottomCentre:
                 {
-                    neighbour = CurrentGeneration[WrappedIndexFinder(rowBelowIndex, topRowIndex, bottomRowIndex), currentPosition.Column];
+                    neighbour = CurrentGeneration[GetWrappedIndex(rowBelowIndex, topRowIndex, bottomRowIndex), currentPosition.Column];
                     break;
                 }
-                
                 default:
                 {
                     neighbour = CurrentGeneration[0,0];
@@ -183,7 +175,7 @@ namespace Conways.Game.Of.Life
             return neighbour;
         } 
 
-        private int WrappedIndexFinder(int location, int upperBound, int lowerBound)
+        private int GetWrappedIndex(int location, int upperBound, int lowerBound)
         {
             return location < lowerBound ? upperBound :
                     location > upperBound ? lowerBound : location;
