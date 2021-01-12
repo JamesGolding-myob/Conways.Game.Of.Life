@@ -5,11 +5,11 @@ namespace Conways.Game.Of.Life
 {
     public class InputConverter
     {
-        public Location ConvertGridRowsAndColumns(string rowsAndColumns)
+        public Dimensions ConvertGridRowsAndColumns(string rowsAndColumns)
         {
             var splitRowsAndColumns = rowsAndColumns.Split(",", StringSplitOptions.None);
 
-            return new Location(Int32.Parse(splitRowsAndColumns[0]), Int32.Parse(splitRowsAndColumns[1]));
+            return new Dimensions(Int32.Parse(splitRowsAndColumns[0]), Int32.Parse(splitRowsAndColumns[1]));
         }
 
         public List<Location> ConvertStartingGenerationInputToCoordinates(string input)
@@ -19,9 +19,16 @@ namespace Conways.Game.Of.Life
 
             foreach (var inputCoordinate in splitInput)
             {
-                coordinateList.Add(ConvertGridRowsAndColumns(inputCoordinate));
+                coordinateList.Add(ConvertToGridLocation(inputCoordinate));
             }
             return coordinateList;
+        }
+
+        public Location ConvertToGridLocation(string inputCoordinates)
+        {
+            var splitRowsAndColumns = inputCoordinates.Split(",", StringSplitOptions.None);
+
+            return new Location(Int32.Parse(splitRowsAndColumns[0]), Int32.Parse(splitRowsAndColumns[1]));
         }
 
         public int ConvertMaxGenerations(string input)

@@ -74,6 +74,7 @@ namespace Conways.Game.Of.Life
             ui.AddToQueue("4,4");
             ui.AddToQueue("2,0 2,1 2,2");
             ui.AddToQueue("1");
+
             game.Run();
 
             Assert.Equal(expectedOutput, ui.LastString);
@@ -84,18 +85,35 @@ namespace Conways.Game.Of.Life
         [InlineData("1", 1)]
         [InlineData("10", 10)]
        [InlineData("100", 100)] 
-        public void multipleTicksinOneGameSetByTheUser(string input, int numberOfGenerations)
+        public void MoreThanOneGenerationInGameSetByTheUser(string input, int numberOfGenerations)
        {
            int numberOfPrintStatementsInGameSetUp = 5;
            var expectedPrints = numberOfGenerations + numberOfPrintStatementsInGameSetUp;
            Game game = new Game(ui, displayFormatter, inputConverter, delayer);
           ui.AddToQueue("3,3");
-          ui.AddToQueue("0,0 1,1 2,2");
+          ui.AddToQueue("0,0 1,0 1,1 0,1");
           ui.AddToQueue(input);
+
           game.Run();
 
            Assert.Equal(expectedPrints, ui.TimesCalled);
        }
+
+        [Fact]
+        public void GameQuitsEarlyWhenAllCellsInAGenerationAreDead()
+        {
+            int numberOfPrintStatementsInGameSetUp = 5;
+            var expectedPrints = numberOfPrintStatementsInGameSetUp + 1;
+            Game allDead = new Game(ui, displayFormatter, inputConverter, delayer);
+            ui.AddToQueue("5,4");
+            ui.AddToQueue("");
+            ui.AddToQueue("10");
+
+            allDead.Run();
+
+            Assert.Equal(expectedPrints, ui.TimesCalled);
+        }
+    
     }
 
     public class StubUI : IUserInterface

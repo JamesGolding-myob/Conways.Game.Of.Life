@@ -80,6 +80,19 @@ namespace Conways.Game.Of.Life
                 CurrentGeneration[cell.GridLocation.Row, cell.GridLocation.Column].IsAlive = status;
             }
         }
+        public bool AllCellsDead()
+        {
+            bool result = true;
+            foreach(Cell cell in CurrentGeneration)
+            {
+                if(cell.IsAlive)
+                {
+                    result = false;
+                    break;
+                }
+            }
+            return result;
+        }
 
         private List<Cell> GetLiveNeighbours(Cell cellOfInterest)
         {

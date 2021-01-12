@@ -13,8 +13,8 @@ namespace Conways.Game.Of.Life
         [InlineData("10,2", 10, 2)]
         public void CommaSeperatednumbersAreConvertedForNumberOfColumnsAndRows(string input, int expectedRowOutput, int expectedColumnOutput)
         {
-            Assert.Equal(expectedRowOutput, converter.ConvertGridRowsAndColumns(input).Row);
-            Assert.Equal(expectedColumnOutput, converter.ConvertGridRowsAndColumns(input).Column);
+            Assert.Equal(expectedRowOutput, converter.ConvertGridRowsAndColumns(input).NumberOfRows);
+            Assert.Equal(expectedColumnOutput, converter.ConvertGridRowsAndColumns(input).NumberOfColumns);
         }
 
         [Fact]

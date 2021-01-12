@@ -8,43 +8,68 @@ namespace Conways.Game.Of.Life
         private DisplayFormatter _formatter;
         private InputConverter _inputConverter;
         private Delayer _displayDelayer;
-        private int _numberOfTicks;
+        private int _counter;
+        private Grid _gameGrid;
+        private int _numberOfGenerations;
         public Game(IUserInterface ui, DisplayFormatter displayFormatter, InputConverter inputConverter, Delayer delayer)
         {
             _ui = ui;
             _formatter = displayFormatter;
             _inputConverter = inputConverter;
            _displayDelayer = delayer;
+           _counter = 0;
         }
 
         public void Run()
         {
-            var counter = 0;
-            _ui.Print(OutputConstants.gridSizeInstructions);
-            var rowColumnInputFromUser = _ui.GetUserInput();
-            var gridDimensions = _inputConverter.ConvertGridRowsAndColumns(rowColumnInputFromUser);
+            SetUpGameInitalValues();
 
-            Grid gameGrid = new Grid(gridDimensions.Row, gridDimensions.Column);
-            var emptyStartingGrid = _formatter.GridToString(gameGrid);
-            _ui.Print(emptyStartingGrid);
-
-            _ui.Print(OutputConstants.startingStateInstructions);
-            var initalState = _ui.GetUserInput();
-            var convertedInitialState = _inputConverter.ConvertStartingGenerationInputToCoordinates(initalState);
-            gameGrid.SetInitialGridState(convertedInitialState);
-            _ui.Print(_formatter.GridToString(gameGrid));
-
-            _ui.Print(OutputConstants.maxGenerationInstructions);
-            _numberOfTicks = _inputConverter.ConvertMaxGenerations(_ui.GetUserInput());
-            while(counter < _numberOfTicks )
+            while(_counter < _numberOfGenerations )
             {
                 _displayDelayer.delayOutPut();
                 Console.Clear();
-                gameGrid.ApplyRulesToGrid();
-                _ui.Print(_formatter.GridToString(gameGrid));
-                  
-                counter++;
+                _gameGrid.ApplyRulesToGrid();
+                _ui.Print(_formatter.GridToString(_gameGrid));
+                if(_gameGrid.AllCellsDead())
+                {
+                    break;
+                }
+                _counter++;
             }
+        }
+
+        private void SetUpGameInitalValues()
+        {   
+            var gridDimensions = GetGridDimensionsFromUser();
+             _gameGrid = new Grid(gridDimensions.NumberOfRows, gridDimensions.NumberOfColumns);
+            var emptyStartingGrid = _formatter.GridToString(_gameGrid);
+            _ui.Print(emptyStartingGrid);
+
+            var initalState = GetInitialStateFromUser(); 
+             if(initalState.Length > 1)
+            {
+                _gameGrid.SetInitialGridState(_inputConverter.ConvertStartingGenerationInputToCoordinates(initalState));
+            }
+            _ui.Print(_formatter.GridToString(_gameGrid));
+
+            _ui.Print(OutputConstants.maxGenerationInstructions);
+            _numberOfGenerations = _inputConverter.ConvertMaxGenerations(_ui.GetUserInput());
+
+        }
+
+        private Dimensions GetGridDimensionsFromUser()//should be dimension
+        {
+            _ui.Print(OutputConstants.gridSizeInstructions);
+            var rowColumnInputFromUser = _ui.GetUserInput();
+            return _inputConverter.ConvertGridRowsAndColumns(rowColumnInputFromUser);
+        }
+
+        private string GetInitialStateFromUser()
+        {
+            _ui.Print(OutputConstants.startingStateInstructions);
+            return _ui.GetUserInput();
+
+            
         }
 
     }

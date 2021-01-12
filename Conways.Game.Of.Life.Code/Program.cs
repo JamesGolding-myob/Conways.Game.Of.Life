@@ -10,7 +10,7 @@
            var displayDelayer = new Delayer(milliSecDelay:1500);
            
            Game life = new Game(ui, displayFormatter, inputConverter, displayDelayer);
-
+          
            life.Run();
         }
     }
