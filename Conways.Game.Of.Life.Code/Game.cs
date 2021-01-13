@@ -76,8 +76,7 @@ namespace Conways.Game.Of.Life
                 }
                 catch (SystemException)
                 {
-                    _ui.Print("Error please enter rows and columns agian");                    
-                    
+                    _ui.Print(OutputConstants.rowsColumnsInputErrorMesage);                      
                 }
             } 
 
@@ -87,9 +86,7 @@ namespace Conways.Game.Of.Life
         private string GetInitialStateFromUser()
         {
             _ui.Print(OutputConstants.startingStateInstructions);
-            return _ui.GetUserInput();
-
-            
+            return _ui.GetUserInput();      
         }
 
     }

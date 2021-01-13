@@ -37,14 +37,31 @@ namespace Conways.Game.Of.Life
         }
 
          [Fact]
-       public void InvalidGridDimensionFormatCauseExcpetionToBeCaughtAndAnotherAttemptGivenToTheUser()
+       public void EmptyStringGridDimensionFormatCauseExcpetionToBeThrown()
        {
-           var expectedErrorMessage = "Input not in a correct format. Please use format: 3,3";
-          
-           
+           var expectedErrorMessage = "Input not in a correct format. Please use format: row,column";
+            
            var ex = Assert.Throws<FormatException>(() => converter.ConvertGridRowsAndColumns(""));
            Assert.Equal(expectedErrorMessage, ex.Message);
        } 
+
+       [Fact]
+       public void LetterInsteadOfNumberStringForGridDimensionCausesExceptionToBeThrown()
+       {
+           var expectedErrorMessage = "Input not in a correct format. Please use format: row,column";
+            
+           var ex = Assert.Throws<FormatException>(() => converter.ConvertGridRowsAndColumns("r"));
+           Assert.Equal(expectedErrorMessage, ex.Message);
+       }
+
+       [Fact]
+       public void OnlyOneNumberEnteredFormatExceptionisThrown()
+       {
+           var expectedErrorMessage = "Please enter two numbers seperated by a comma.";
+            
+           var ex = Assert.Throws<IndexOutOfRangeException>(() => converter.ConvertGridRowsAndColumns("11"));
+           Assert.Equal(expectedErrorMessage, ex.Message);
+       }
 
         public bool ListValuesAreTheSame(List<Location> expected, List<Location> converted)
         { bool isSame = true;

@@ -16,7 +16,11 @@ namespace Conways.Game.Of.Life
             }
             catch (FormatException)
             { 
-                throw new FormatException("Input not in a correct format. Please use format: 3,3");
+                throw new FormatException(OutputConstants.rowsColumnsFormatExceptionMessage);
+            }
+            catch(IndexOutOfRangeException)
+            {
+                throw new IndexOutOfRangeException("Please enter two numbers seperated by a comma.");
             }
 
             return output;
