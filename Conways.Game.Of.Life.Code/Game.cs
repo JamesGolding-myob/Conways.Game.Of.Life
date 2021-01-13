@@ -26,6 +26,7 @@ namespace Conways.Game.Of.Life
 
             while(_counter < _numberOfGenerations )
             {
+                _ui.Print(_formatter.GridToString(_gameGrid));
                 _displayDelayer.delayOutPut();
                 Console.Clear();
                 _gameGrid.ApplyRulesToGrid();
@@ -46,7 +47,7 @@ namespace Conways.Game.Of.Life
             _ui.Print(emptyStartingGrid);
 
             var initalState = GetInitialStateFromUser(); 
-             if(initalState.Length > 1)
+             if(initalState.Length > 0)
             {
                 _gameGrid.SetInitialGridState(_inputConverter.ConvertStartingGenerationInputToCoordinates(initalState));
             }

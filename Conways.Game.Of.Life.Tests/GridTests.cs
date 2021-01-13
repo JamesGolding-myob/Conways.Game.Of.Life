@@ -251,6 +251,17 @@ namespace Conways.Game.Of.Life.Tests
 
             Assert.True(CellsAreDeadAfterTick(fourByfour));
         }
+
+        [Fact]
+        public void CellsInA2x1GridShouldAllDieOffAsACellCanNOTReferenceItselfAsANeighbour()
+        {
+            Grid twoByOne = new Grid(2, 1);
+            var input = new List<Location>{new Location(0,0)};
+            twoByOne.SetInitialGridState(input);
+            twoByOne.ApplyRulesToGrid();
+
+            Assert.True(CellsAreDeadAfterTick(twoByOne));
+        }
  
         private int ManyCellsSetToAlive(Grid grid)
         {

@@ -49,20 +49,28 @@ namespace Conways.Game.Of.Life
             foreach(Cell cell in CurrentGeneration)
             {
                 List<Cell> liveNeighbours = GetLiveNeighbours(cell);
-               if(liveNeighbours.Count < NeighbourLimitForUnderPopulation)
-               {
-                   cellsToBeDeadInNextGeneration.Add(cell);
-               }
+                if(NumberOfRows < 2 || NumberOfColumns <2)
+                {
+                    cellsToBeDeadInNextGeneration.Add(cell);
+                }
+                else
+                {
+                    if(liveNeighbours.Count < NeighbourLimitForUnderPopulation)
+                    {
+                        cellsToBeDeadInNextGeneration.Add(cell);
+                    }
 
-               if(liveNeighbours.Count == NeighbourLimitToBecomeAlive)
-               {
-                   cellsToBecomeAliveInNextGeneration.Add(cell);
-               }
-               
-               if(liveNeighbours.Count > NeighbourLimitForOverPopulation)
-               {
-                   cellsToBeDeadInNextGeneration.Add(cell);
-               }   
+                    if(liveNeighbours.Count == NeighbourLimitToBecomeAlive)
+                    {
+                        cellsToBecomeAliveInNextGeneration.Add(cell);
+                    }
+                    
+                    if(liveNeighbours.Count > NeighbourLimitForOverPopulation)
+                    {
+                        cellsToBeDeadInNextGeneration.Add(cell);
+                    }   
+                }
+                
             }
             UpdateGeneration(cellsToBeDeadInNextGeneration, cellsToBecomeAliveInNextGeneration);
         }
