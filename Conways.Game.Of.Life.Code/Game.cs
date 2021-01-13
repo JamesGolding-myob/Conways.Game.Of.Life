@@ -1,4 +1,5 @@
 using System;
+
 namespace Conways.Game.Of.Life
 {
     public class Game
@@ -24,9 +25,9 @@ namespace Conways.Game.Of.Life
         {
             SetUpGameInitalValues();
 
+            _ui.Print(_formatter.GridToString(_gameGrid));
             while(_counter < _numberOfGenerations )
             {
-                _ui.Print(_formatter.GridToString(_gameGrid));
                 _displayDelayer.delayOutPut();
                 Console.Clear();
                 _gameGrid.ApplyRulesToGrid();
@@ -60,9 +61,27 @@ namespace Conways.Game.Of.Life
 
         private Dimensions GetGridDimensionsFromUser()//should be dimension
         {
-            _ui.Print(OutputConstants.gridSizeInstructions);
-            var rowColumnInputFromUser = _ui.GetUserInput();
-            return _inputConverter.ConvertGridRowsAndColumns(rowColumnInputFromUser);
+            
+            Dimensions output;
+            string rowColumnInputFromUser; 
+            
+            while(true)
+            {   
+                try
+                {
+                    _ui.Print(OutputConstants.gridSizeInstructions);
+                    rowColumnInputFromUser = _ui.GetUserInput();
+                    output = _inputConverter.ConvertGridRowsAndColumns(rowColumnInputFromUser);  
+                    break; 
+                }
+                catch (SystemException)
+                {
+                    _ui.Print("Error please enter rows and columns agian");                    
+                    
+                }
+            } 
+
+            return output;
         }
 
         private string GetInitialStateFromUser()

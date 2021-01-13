@@ -1,5 +1,6 @@
 using Xunit;
 using System.Collections;
+
 namespace Conways.Game.Of.Life
 {
     public class GameTests
@@ -87,8 +88,8 @@ namespace Conways.Game.Of.Life
        [InlineData("100", 100)] 
         public void MoreThanOneGenerationInGameSetByTheUser(string input, int numberOfGenerations)
        {
-           int numberOfPrintStatementsInGameSetUp = 5;
-           var expectedPrints = numberOfGenerations + numberOfPrintStatementsInGameSetUp;
+           int numberOfPrintStatementsBeforeMainLoop = 6;
+           var expectedPrints = numberOfGenerations + numberOfPrintStatementsBeforeMainLoop;
            Game game = new Game(ui, displayFormatter, inputConverter, delayer);
           ui.AddToQueue("3,3");
           ui.AddToQueue("0,0 1,0 1,1 0,1");
@@ -102,8 +103,8 @@ namespace Conways.Game.Of.Life
         [Fact]
         public void GameQuitsEarlyWhenAllCellsInAGenerationAreDead()
         {
-            int numberOfPrintStatementsInGameSetUp = 5;
-            var expectedPrints = numberOfPrintStatementsInGameSetUp + 1;
+            int numberOfPrintStatementsBeoferMainLoop = 6;
+            var expectedPrints = numberOfPrintStatementsBeoferMainLoop + 1;
             Game allDead = new Game(ui, displayFormatter, inputConverter, delayer);
             ui.AddToQueue("5,4");
             ui.AddToQueue("");
@@ -113,6 +114,8 @@ namespace Conways.Game.Of.Life
 
             Assert.Equal(expectedPrints, ui.TimesCalled);
         }
+
+       
     
     }
 

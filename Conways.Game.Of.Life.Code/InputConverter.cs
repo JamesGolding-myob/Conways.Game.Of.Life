@@ -7,9 +7,19 @@ namespace Conways.Game.Of.Life
     {
         public Dimensions ConvertGridRowsAndColumns(string rowsAndColumns)
         {
-            var splitRowsAndColumns = rowsAndColumns.Split(",", StringSplitOptions.None);
+            string[]splitRowsAndColumns;
+            Dimensions output;
+            try
+            {
+                splitRowsAndColumns = rowsAndColumns.Split(",", StringSplitOptions.None);
+                output = new Dimensions(Int32.Parse(splitRowsAndColumns[0]), Int32.Parse(splitRowsAndColumns[1]));
+            }
+            catch (FormatException)
+            { 
+                throw new FormatException("Input not in a correct format. Please use format: 3,3");
+            }
 
-            return new Dimensions(Int32.Parse(splitRowsAndColumns[0]), Int32.Parse(splitRowsAndColumns[1]));
+            return output;
         }
 
         public List<Location> ConvertStartingGenerationInputToCoordinates(string input)

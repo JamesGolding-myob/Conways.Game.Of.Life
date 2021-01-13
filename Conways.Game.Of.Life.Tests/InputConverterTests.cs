@@ -1,5 +1,6 @@
 using Xunit;
 using System.Collections.Generic;
+using System;
 namespace Conways.Game.Of.Life
 {
     public class InputConverterTests
@@ -34,6 +35,16 @@ namespace Conways.Game.Of.Life
 
             Assert.Equal(expectedOutput, converter.ConvertMaxGenerations(input));
         }
+
+         [Fact]
+       public void InvalidGridDimensionFormatCauseExcpetionToBeCaughtAndAnotherAttemptGivenToTheUser()
+       {
+           var expectedErrorMessage = "Input not in a correct format. Please use format: 3,3";
+          
+           
+           var ex = Assert.Throws<FormatException>(() => converter.ConvertGridRowsAndColumns(""));
+           Assert.Equal(expectedErrorMessage, ex.Message);
+       } 
 
         public bool ListValuesAreTheSame(List<Location> expected, List<Location> converted)
         { bool isSame = true;
