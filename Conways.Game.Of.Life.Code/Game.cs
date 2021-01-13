@@ -20,12 +20,17 @@ namespace Conways.Game.Of.Life
             (int row, int column) = _inputConverter.ConvertGridRowsAndColumns(rowColumnInputFromUser);
 
             Grid gameGrid = new Grid(row, column);
-            var defaultGrid = _formatter.GridToString(gameGrid);
-            _ui.Print(defaultGrid);
+            var emptyStartingGrid = _formatter.GridToString(gameGrid);
+            _ui.Print(emptyStartingGrid);
 
-            var initalStateFromUser = _ui.GetUserInput();
-            var convertedInitialState = _inputConverter.ConvertStartingGenerationInputToCoordinates(initalStateFromUser);
+            _ui.Print(OutputConstants.startingStateInstructions);
+            var initalState = _ui.GetUserInput();
+            var convertedInitialState = _inputConverter.ConvertStartingGenerationInputToCoordinates(initalState);
             gameGrid.SetInitialGridState(convertedInitialState);
+            _ui.Print(_formatter.GridToString(gameGrid));
+
+           gameGrid.ApplyRulesToGrid();
+            
             _ui.Print(_formatter.GridToString(gameGrid));
         }
 

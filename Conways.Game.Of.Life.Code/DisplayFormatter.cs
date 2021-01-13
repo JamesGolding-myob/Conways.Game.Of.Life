@@ -4,8 +4,8 @@ namespace Conways.Game.Of.Life
     {
         public string GridToString(Grid grid)
         {
-            int rowsMaximum = grid.Rows - 1;
-            int columnsMaximum = grid.Columns - 1;
+            int rowsMaximum = grid.NumberOfRows - 1;
+            int columnsMaximum = grid.NumberOfColumns - 1;
             string output = "";
             string deadCellSymbol = " . ";
             string aliveCellSymbol = " A ";
@@ -16,7 +16,7 @@ namespace Conways.Game.Of.Life
                 {
                     string symbolToAdd = deadCellSymbol;
 
-                    if(grid.Board[rowIndex, columnIndex].IsAlive)
+                    if(grid.CurrentGeneration[rowIndex, columnIndex].IsAlive)
                     {
                         symbolToAdd = aliveCellSymbol;
                     }

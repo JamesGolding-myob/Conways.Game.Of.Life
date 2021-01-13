@@ -9,7 +9,7 @@ namespace Conways.Game.Of.Life
         StubUI ui = new StubUI(); 
 
         [Fact]
-        public void UserSetsTheTopRowforTheGridToBeAliveAndSeesThatPatternDisplayedToThem()
+        public void UserInitiallyAetsTopRowAliveAllCellsSurviveToNextGeneration()
         {
              var expectedOutput =   " A " + " A " + " A " + " A \n" +
                                     " . " + " . " + " . " + " . \n" +
@@ -24,9 +24,10 @@ namespace Conways.Game.Of.Life
 
             Assert.Equal(expectedOutput, ui.LastString);
         }
-
-        
+ 
     }
+
+    
     public class StubUI : IUserInterface
     {
         public string LastString{get; private set;}
