@@ -52,6 +52,7 @@ namespace Conways.Game.Of.Life
             {
                 _gameGrid.SetInitialGridState(_inputConverter.ConvertStartingGenerationInputToCoordinates(initalState));
             }
+            
             _ui.Print(_formatter.GridToString(_gameGrid));
 
             _ui.Print(OutputConstants.maxGenerationInstructions);

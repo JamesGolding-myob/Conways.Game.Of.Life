@@ -63,6 +63,15 @@ namespace Conways.Game.Of.Life
            Assert.Equal(expectedErrorMessage, ex.Message);
        }
 
+       [Fact]
+       public void EmptyInitialStateStringFormatExscpetionIsThrown()
+       {
+           var expectedErrorMessage = "Input not in a correct format. Please input pairs of numbers seperated by a comma. eg 0,0 1,2";
+            
+           var ex = Assert.Throws<FormatException>(() => converter.ConvertStartingGenerationInputToCoordinates(" "));
+           Assert.Equal(expectedErrorMessage, ex.Message);
+       }
+
         public bool ListValuesAreTheSame(List<Location> expected, List<Location> converted)
         { bool isSame = true;
             for(int i = 0; i <= 1; i++)

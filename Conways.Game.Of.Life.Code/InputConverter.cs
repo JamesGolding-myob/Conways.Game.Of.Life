@@ -20,9 +20,8 @@ namespace Conways.Game.Of.Life
             }
             catch(IndexOutOfRangeException)
             {
-                throw new IndexOutOfRangeException("Please enter two numbers seperated by a comma.");
+                throw new IndexOutOfRangeException(OutputConstants.gridDimensionOutOfRangeExceptionMessage);
             }
-
             return output;
         }
 
@@ -40,9 +39,19 @@ namespace Conways.Game.Of.Life
 
         public Location ConvertToGridLocation(string inputCoordinates)
         {
-            var splitRowsAndColumns = inputCoordinates.Split(",", StringSplitOptions.None);
+            Location result;
+            string[] splitRowsAndColumns = inputCoordinates.Split(",", StringSplitOptions.None);
+            
+            try
+            {
+                result = new Location(Int32.Parse(splitRowsAndColumns[0]), Int32.Parse(splitRowsAndColumns[1]));
+            }
+            catch (FormatException)
+            {
+                throw new FormatException("Input not in a correct format. Please input pairs of numbers seperated by a comma. eg 0,0 1,2");
+            }
 
-            return new Location(Int32.Parse(splitRowsAndColumns[0]), Int32.Parse(splitRowsAndColumns[1]));
+            return result;
         }
 
         public int ConvertMaxGenerations(string input)

@@ -114,9 +114,7 @@ namespace Conways.Game.Of.Life
 
             Assert.Equal(expectedPrints, ui.TimesCalled);
         }
-
-       
-    
+ 
     }
 
     public class StubUI : IUserInterface
