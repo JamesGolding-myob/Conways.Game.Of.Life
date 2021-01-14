@@ -64,11 +64,20 @@ namespace Conways.Game.Of.Life
        }
 
        [Fact]
-       public void EmptyInitialStateStringFormatExscpetionIsThrown()
+       public void EmptyInitialStateStringFormatExecpetionIsThrown()
        {
            var expectedErrorMessage = "Input not in a correct format. Please input pairs of numbers seperated by a comma. eg 0,0 1,2";
             
            var ex = Assert.Throws<FormatException>(() => converter.ConvertStartingGenerationInputToCoordinates(" "));
+           Assert.Equal(expectedErrorMessage, ex.Message);
+       }
+
+       [Fact]
+       public void OnlyOneNumberWhenSettingInitialStateThrowsIndexOutOfRangeException()
+       {
+            var expectedErrorMessage = "Please enter two numbers seperated by a comma.";
+            
+           var ex = Assert.Throws<IndexOutOfRangeException>(() => converter.ConvertStartingGenerationInputToCoordinates("1"));
            Assert.Equal(expectedErrorMessage, ex.Message);
        }
 

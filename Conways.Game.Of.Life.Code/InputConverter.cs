@@ -32,7 +32,18 @@ namespace Conways.Game.Of.Life
 
             foreach (var inputCoordinate in splitInput)
             {
-                coordinateList.Add(ConvertToGridLocation(inputCoordinate));
+                try
+                {
+                    coordinateList.Add(ConvertToGridLocation(inputCoordinate));   
+                }
+                catch (FormatException)
+                {  
+                    throw;
+                }
+                catch(IndexOutOfRangeException)
+                {
+                    throw;
+                }
             }
             return coordinateList;
         }
@@ -41,16 +52,19 @@ namespace Conways.Game.Of.Life
         {
             Location result;
             string[] splitRowsAndColumns = inputCoordinates.Split(",", StringSplitOptions.None);
-            
+
             try
             {
                 result = new Location(Int32.Parse(splitRowsAndColumns[0]), Int32.Parse(splitRowsAndColumns[1]));
             }
+            catch(IndexOutOfRangeException)
+            {
+                throw new IndexOutOfRangeException(OutputConstants.initialGridStateOutOfRangeException);
+            }
             catch (FormatException)
             {
-                throw new FormatException("Input not in a correct format. Please input pairs of numbers seperated by a comma. eg 0,0 1,2");
+                throw new FormatException(OutputConstants.initialGridStateFormatException);
             }
-
             return result;
         }
 

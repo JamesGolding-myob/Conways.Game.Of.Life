@@ -103,10 +103,15 @@ namespace Conways.Game.Of.Life
         [Fact]
         public void GameQuitsEarlyWhenAllCellsInAGenerationAreDead()
         {
-            int numberOfPrintStatementsBeoferMainLoop = 6;
-            var expectedPrints = numberOfPrintStatementsBeoferMainLoop + 1;
+            int numberOfPrintStatementsBeforeMainLoop = 6;
+            int numberPrintsAssociatedWithInvalidInputs = 6;
+            var expectedPrints = numberOfPrintStatementsBeforeMainLoop + numberPrintsAssociatedWithInvalidInputs;
             Game allDead = new Game(ui, displayFormatter, inputConverter, delayer);
+            ui.AddToQueue("t");
+            ui.AddToQueue(" ");
             ui.AddToQueue("5,4");
+            ui.AddToQueue(" ");
+            ui.AddToQueue("1");
             ui.AddToQueue("");
             ui.AddToQueue("10");
 

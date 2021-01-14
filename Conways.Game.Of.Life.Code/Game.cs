@@ -46,13 +46,34 @@ namespace Conways.Game.Of.Life
              _gameGrid = new Grid(gridDimensions.NumberOfRows, gridDimensions.NumberOfColumns);
             var emptyStartingGrid = _formatter.GridToString(_gameGrid);
             _ui.Print(emptyStartingGrid);
-
-            var initalState = GetInitialStateFromUser(); 
-             if(initalState.Length > 0)
-            {
-                _gameGrid.SetInitialGridState(_inputConverter.ConvertStartingGenerationInputToCoordinates(initalState));
-            }
             
+            bool inputIsValid = false;
+            do
+            {
+                var initalState = GetInitialStateFromUser(); 
+                if(initalState.Length > 0)
+                {
+                    try
+                    {
+                        _gameGrid.SetInitialGridState(_inputConverter.ConvertStartingGenerationInputToCoordinates(initalState));
+                        inputIsValid = true;   
+                    }
+                    catch (FormatException)
+                    {  
+                        _ui.Print(OutputConstants.initialGridStateFormatException); 
+                    }
+                    catch(IndexOutOfRangeException)
+                    {
+                        _ui.Print(OutputConstants.initialGridStateOutOfRangeException);
+                    }
+                }
+                else
+                {
+                    inputIsValid = true;
+                }
+                
+            } while (!inputIsValid);
+
             _ui.Print(_formatter.GridToString(_gameGrid));
 
             _ui.Print(OutputConstants.maxGenerationInstructions);
@@ -60,28 +81,23 @@ namespace Conways.Game.Of.Life
 
         }
 
-        private Dimensions GetGridDimensionsFromUser()//should be dimension
+        private Dimensions GetGridDimensionsFromUser()
         {
-            
-            Dimensions output;
             string rowColumnInputFromUser; 
-            
-            while(true)
+ 
+            do
             {   
                 try
                 {
                     _ui.Print(OutputConstants.gridSizeInstructions);
                     rowColumnInputFromUser = _ui.GetUserInput();
-                    output = _inputConverter.ConvertGridRowsAndColumns(rowColumnInputFromUser);  
-                    break; 
+                    return _inputConverter.ConvertGridRowsAndColumns(rowColumnInputFromUser);     
                 }
                 catch (SystemException)
                 {
-                    _ui.Print(OutputConstants.rowsColumnsInputErrorMesage);                      
+                    _ui.Print(OutputConstants.rowsColumnsInputErrorMesage);                         
                 }
-            } 
-
-            return output;
+            } while(true);
         }
 
         private string GetInitialStateFromUser()
