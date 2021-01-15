@@ -68,9 +68,16 @@ namespace Conways.Game.Of.Life
             return result;
         }
 
-        public int ConvertMaxGenerations(string input)
+        public int ConvertMaxGenerations(string inputFromUser)
         {
-            return Int32.Parse(input);
+            try
+            {
+                return Int32.Parse(inputFromUser);
+            }
+            catch (FormatException)
+            {
+                throw new FormatException(OutputConstants.maxGenerationFormatException);
+            }
         }
 
     }

@@ -77,8 +77,17 @@ namespace Conways.Game.Of.Life
        {
             var expectedErrorMessage = "Please enter two numbers seperated by a comma.";
             
-           var ex = Assert.Throws<IndexOutOfRangeException>(() => converter.ConvertStartingGenerationInputToCoordinates("1"));
-           Assert.Equal(expectedErrorMessage, ex.Message);
+            var ex = Assert.Throws<IndexOutOfRangeException>(() => converter.ConvertStartingGenerationInputToCoordinates("1"));
+            Assert.Equal(expectedErrorMessage, ex.Message);
+       }
+
+       [Fact]
+       public void FormatExceptionsAreThrownForConvertingMaxGeneratinsString()
+       {
+            var expectedErrorMessage = "Please enter a number greater than zero.";
+            
+            var ex = Assert.Throws<FormatException>(() => converter.ConvertMaxGenerations(""));
+            Assert.Equal(expectedErrorMessage, ex.Message);
        }
 
         public bool ListValuesAreTheSame(List<Location> expected, List<Location> converted)
