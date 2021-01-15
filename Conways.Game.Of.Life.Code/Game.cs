@@ -47,6 +47,16 @@ namespace Conways.Game.Of.Life
             var emptyStartingGrid = _formatter.GridToString(_gameGrid);
             _ui.Print(emptyStartingGrid);
             
+           LoopUntilValidInitialStateIsSet();
+
+            _ui.Print(_formatter.GridToString(_gameGrid));
+
+            LoopUntilValidMaxGenerationNuumber();
+
+        }
+
+        private void LoopUntilValidInitialStateIsSet()
+        {
             bool inputIsValid = false;
             do
             {
@@ -73,22 +83,6 @@ namespace Conways.Game.Of.Life
                 }
                 
             } while (!inputIsValid);
-
-            _ui.Print(_formatter.GridToString(_gameGrid));
-            do
-            {
-                try
-                {
-                    _ui.Print(OutputConstants.maxGenerationInstructions);
-                    _numberOfGenerations = _inputConverter.ConvertMaxGenerations(_ui.GetUserInput());
-                    break;
-                }
-                catch (FormatException)
-                {
-                    _ui.Print("Error");
-                }
-            } while (true);
-
         }
 
         private Dimensions GetGridDimensionsFromUser()
@@ -113,6 +107,23 @@ namespace Conways.Game.Of.Life
         {
             _ui.Print(OutputConstants.startingStateInstructions);
             return _ui.GetUserInput();      
+        }
+
+        private void LoopUntilValidMaxGenerationNuumber()
+        {
+            do
+            {
+                try
+                {
+                    _ui.Print(OutputConstants.maxGenerationInstructions);
+                    _numberOfGenerations = _inputConverter.ConvertMaxGenerations(_ui.GetUserInput());
+                    break;
+                }
+                catch (FormatException)
+                {
+                    _ui.Print("Error");
+                }
+            } while (true);
         }
 
     }
