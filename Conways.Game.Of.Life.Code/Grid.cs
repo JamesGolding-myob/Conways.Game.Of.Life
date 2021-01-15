@@ -33,7 +33,7 @@ namespace Conways.Game.Of.Life
             }
         }
 
-        public void SetInitialGridState(List<Location> locationsToBeAlive)
+        public void SeedInitialGridState(List<Location> locationsToBeAlive)
         {
             foreach (var location in locationsToBeAlive)
             {

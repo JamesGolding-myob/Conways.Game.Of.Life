@@ -28,7 +28,7 @@ namespace Conways.Game.Of.Life
 
             Grid grid = new Grid(2, 3);
 
-            grid.SetInitialGridState(zeroZeroAliveIntialState);
+            grid.SeedInitialGridState(zeroZeroAliveIntialState);
 
             Assert.Equal(expectedOutput, displayFormatter.GridToString(grid));
         }

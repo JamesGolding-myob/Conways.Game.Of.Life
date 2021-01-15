@@ -26,6 +26,11 @@ namespace Conways.Game.Of.Life
             SetUpGameInitalValues();
 
             _ui.Print(_formatter.GridToString(_gameGrid));
+            SimulateFollowingGenerations();   
+        }
+
+        private void SimulateFollowingGenerations()
+        {
             while(_counter < _numberOfGenerations )
             {
                 _displayDelayer.delayOutPut();
@@ -52,7 +57,6 @@ namespace Conways.Game.Of.Life
             _ui.Print(_formatter.GridToString(_gameGrid));
 
             LoopUntilValidMaxGenerationNuumber();
-
         }
 
         private void LoopUntilValidInitialStateIsSet()
@@ -65,7 +69,7 @@ namespace Conways.Game.Of.Life
                 {
                     try
                     {
-                        _gameGrid.SetInitialGridState(_inputConverter.ConvertStartingGenerationInputToCoordinates(initalState));
+                        _gameGrid.SeedInitialGridState(_inputConverter.ConvertStartingGenerationInputToCoordinates(initalState));
                         inputIsValid = true;   
                     }
                     catch (FormatException)
@@ -86,7 +90,7 @@ namespace Conways.Game.Of.Life
         }
 
         private Dimensions GetGridDimensionsFromUser()
-        {
+        {      
             string rowColumnInputFromUser; 
             do
             {   

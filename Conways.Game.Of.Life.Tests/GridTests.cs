@@ -14,7 +14,7 @@ namespace Conways.Game.Of.Life.Tests
             {
                 new Location(0,0)
             };
-            singleCellGrid.SetInitialGridState(input);
+            singleCellGrid.SeedInitialGridState(input);
 
             Assert.True(singleCellGrid.CurrentGeneration[0, 0].IsAlive);
         }
@@ -37,7 +37,7 @@ namespace Conways.Game.Of.Life.Tests
               new Location(locationRow, locationColumn)
            };
 
-            threeByThree.SetInitialGridState(input);
+            threeByThree.SeedInitialGridState(input);
 
             Assert.True(threeByThree.CurrentGeneration[locationRow, locationColumn].IsAlive);
         }
@@ -56,7 +56,7 @@ namespace Conways.Game.Of.Life.Tests
                 new Location(3, 3)
             };
 
-            fiveByFive.SetInitialGridState(input);
+            fiveByFive.SeedInitialGridState(input);
 
             Assert.Equal(6, ManyCellsSetToAlive(fiveByFive));
         }
@@ -69,7 +69,7 @@ namespace Conways.Game.Of.Life.Tests
                 new Location(0, 0)
             };
 
-            twoByTwo.SetInitialGridState(input);
+            twoByTwo.SeedInitialGridState(input);
             twoByTwo.ApplyRulesToGrid();
 
             Assert.False(twoByTwo.CurrentGeneration[0, 0].IsAlive);
@@ -88,7 +88,7 @@ namespace Conways.Game.Of.Life.Tests
                 new Location(cellIndexes[2], cellIndexes[3])
             };
 
-            twoByTwo.SetInitialGridState(input);
+            twoByTwo.SeedInitialGridState(input);
             twoByTwo.ApplyRulesToGrid();  
 
             Assert.True(twoByTwo.CurrentGeneration[cellIndexes[0], cellIndexes[1]].IsAlive);
@@ -106,7 +106,7 @@ namespace Conways.Game.Of.Life.Tests
                 new Location(cellLocationIndexes[2], cellLocationIndexes[3])
             };
 
-            twoByTwo.SetInitialGridState(input);
+            twoByTwo.SeedInitialGridState(input);
             twoByTwo.ApplyRulesToGrid();  
 
             Assert.False(twoByTwo.CurrentGeneration[cellLocationIndexes[0], cellLocationIndexes[1]].IsAlive);
@@ -128,7 +128,7 @@ namespace Conways.Game.Of.Life.Tests
                 new Location(0, 1)
             };
 
-            genericGrid.SetInitialGridState(input);
+            genericGrid.SeedInitialGridState(input);
             genericGrid.ApplyRulesToGrid();
 
             Assert.False(genericGrid.CurrentGeneration[neighbourRow, neighbourColumn].IsAlive);
@@ -149,7 +149,7 @@ namespace Conways.Game.Of.Life.Tests
                 new Location(cellOfInterestRow, cellOfInterestColumn),
                 new Location(secondNeoighbourRow, secondNeihbourColumn),
             };
-            sixBySix.SetInitialGridState(input);
+            sixBySix.SeedInitialGridState(input);
             sixBySix.ApplyRulesToGrid();
 
             Assert.True(sixBySix.CurrentGeneration[cellOfInterestRow, cellOfInterestColumn].IsAlive);
@@ -169,7 +169,7 @@ namespace Conways.Game.Of.Life.Tests
                 new Location(row, 2)
             };
 
-            threeByThree.SetInitialGridState(input);
+            threeByThree.SeedInitialGridState(input);
             threeByThree.ApplyRulesToGrid();
 
             Assert.True(CellsAreAliveAfterTick(input, threeByThree));
@@ -191,7 +191,7 @@ namespace Conways.Game.Of.Life.Tests
                 new Location(column, 3)
             };
 
-            fourByFour.SetInitialGridState(input);
+            fourByFour.SeedInitialGridState(input);
             fourByFour.ApplyRulesToGrid();
 
             Assert.True(CellsAreAliveAfterTick(input, fourByFour));
@@ -211,7 +211,7 @@ namespace Conways.Game.Of.Life.Tests
                 new Location(neighbourCoordinates[4], neighbourCoordinates[5])
             };
 
-            threeByFour.SetInitialGridState(input);
+            threeByFour.SeedInitialGridState(input);
             threeByFour.ApplyRulesToGrid();
 
             Assert.True(threeByFour.CurrentGeneration[cellOfinterestCoordinates[0],cellOfinterestCoordinates[1]].IsAlive);
@@ -229,7 +229,7 @@ namespace Conways.Game.Of.Life.Tests
                 new Location(3,2),
                 new Location(2,3)
             };
-            fourByFour.SetInitialGridState(input);
+            fourByFour.SeedInitialGridState(input);
             fourByFour.ApplyRulesToGrid();
 
             Assert.False(fourByFour.CurrentGeneration[2,2].IsAlive); 
@@ -246,7 +246,7 @@ namespace Conways.Game.Of.Life.Tests
                 new Location(2,0), new Location(2,1), new Location(2,2), new Location(2,3),
                 new Location(3,0), new Location(3,1), new Location(3,2), new Location(3,3)
             };
-            fourByfour.SetInitialGridState(input);
+            fourByfour.SeedInitialGridState(input);
             fourByfour.ApplyRulesToGrid();
 
             Assert.True(CellsAreDeadAfterTick(fourByfour));
@@ -257,7 +257,7 @@ namespace Conways.Game.Of.Life.Tests
         {
             Grid twoByOne = new Grid(2, 1);
             var input = new List<Location>{new Location(0,0)};
-            twoByOne.SetInitialGridState(input);
+            twoByOne.SeedInitialGridState(input);
             twoByOne.ApplyRulesToGrid();
 
             Assert.True(CellsAreDeadAfterTick(twoByOne));
