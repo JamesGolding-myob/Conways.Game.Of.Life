@@ -1,4 +1,4 @@
-using System;
+
 namespace Conways.Game.Of.Life
 {
     public class Cell
