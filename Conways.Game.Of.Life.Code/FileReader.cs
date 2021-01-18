@@ -6,6 +6,7 @@ namespace Conways.Game.Of.Life
         public string[] ReadInputs(string filePath)
         {
             string[] output = File.ReadAllLines(filePath);
+            
             return output;
         }
     }

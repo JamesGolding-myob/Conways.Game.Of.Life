@@ -7,12 +7,13 @@ namespace Conways.Game.Of.Life
         FileReader reader = new FileReader();
 
         [Fact]
-        public void CanReadAStringFromAFile()
+        public void CanReadACellLocationString()
         {
             var filePath = @"/Users/James.Golding/Desktop/temp.csv";
             string[] data = reader.ReadInputs(filePath);
 
-            Assert.Equal("1", data[0]); 
+            Assert.Equal("1,1", data[0]); 
+            Assert.Equal("0,0", data[1]); 
         }
 
     }

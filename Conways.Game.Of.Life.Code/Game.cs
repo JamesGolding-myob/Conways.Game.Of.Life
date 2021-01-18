@@ -9,15 +9,17 @@ namespace Conways.Game.Of.Life
         private DisplayFormatter _formatter;
         private InputConverter _inputConverter;
         private Delayer _displayDelayer;
+        private FileReader _fileReader;
         private int _counter;
         private Grid _gameGrid;
         private int _numberOfGenerations;
-        public Game(IUserInterface ui, DisplayFormatter displayFormatter, InputConverter inputConverter, Delayer delayer)
+        public Game(IUserInterface ui, DisplayFormatter displayFormatter, InputConverter inputConverter, Delayer delayer, FileReader fileReader)
         {
             _ui = ui;
             _formatter = displayFormatter;
             _inputConverter = inputConverter;
            _displayDelayer = delayer;
+           _fileReader = fileReader;
            _counter = 0;
         }
 
@@ -56,7 +58,7 @@ namespace Conways.Game.Of.Life
 
             _ui.Print(_formatter.GridToString(_gameGrid));
 
-            LoopUntilValidMaxGenerationNuumber();
+            LoopUntilValidMaxGenerationNumber();
         }
 
         private void LoopUntilValidInitialStateIsSet()
@@ -109,11 +111,36 @@ namespace Conways.Game.Of.Life
 
         private string GetInitialStateFromUser()
         {
-            _ui.Print(OutputConstants.startingStateInstructions);
-            return _ui.GetUserInput();      
+            string initalStateResponse;
+            _ui.Print("Manual entry y/n");
+            var userResponse = _ui.GetUserInput();
+            if(userResponse == "y")
+            {
+                _ui.Print(OutputConstants.startingStateInstructions);
+                initalStateResponse = _ui.GetUserInput();
+            }
+            else
+            {
+               var filePath = _ui.GetUserInput();
+               string temp = "";
+               string[] fileData = _fileReader.ReadInputs(filePath);
+               for(int i = 0; i < fileData.Length; i++)
+               {
+                   if(i == fileData.Length - 1)
+                   {
+                       temp = temp + fileData[i];
+                   }
+                   else
+                   {
+                        temp = temp + fileData[i] + " ";
+                   }
+               }
+                initalStateResponse = temp;
+            }
+            return initalStateResponse;      
         }
 
-        private void LoopUntilValidMaxGenerationNuumber()
+        private void LoopUntilValidMaxGenerationNumber()
         {
             do
             {

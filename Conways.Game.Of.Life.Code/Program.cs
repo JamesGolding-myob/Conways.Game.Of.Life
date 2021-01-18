@@ -8,8 +8,9 @@
            var displayFormatter = new DisplayFormatter();
            var inputConverter = new InputConverter();
            var displayDelayer = new Delayer(milliSecDelay: 1500);
+           var fileReader = new FileReader();
            
-           Game life = new Game(ui, displayFormatter, inputConverter, displayDelayer);
+           Game life = new Game(ui, displayFormatter, inputConverter, displayDelayer, fileReader);
           
            life.Run();
         }
