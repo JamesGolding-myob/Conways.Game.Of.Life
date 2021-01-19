@@ -21,7 +21,7 @@ namespace Conways.Game.Of.Life
  
             Game game = new Game(ui, displayFormatter, inputConverter, delayer, fileReader);
             ui.AddToQueue("3,4");
-            ui.AddToQueue("y");
+            ui.AddToQueue("n");
             ui.AddToQueue("2,0 2,1 2,2 2,3");
             ui.AddToQueue("1");
 
@@ -39,7 +39,7 @@ namespace Conways.Game.Of.Life
 
             Game game = new Game(ui, displayFormatter, inputConverter, delayer, fileReader);
             ui.AddToQueue("3,4");
-            ui.AddToQueue("y");
+            ui.AddToQueue("n");
             ui.AddToQueue("2,3 1,0 0,3");
             ui.AddToQueue("1");
 
@@ -58,7 +58,7 @@ namespace Conways.Game.Of.Life
 
             Game game = new Game(ui, displayFormatter, inputConverter, delayer, fileReader);
             ui.AddToQueue("4,4");
-            ui.AddToQueue("y");
+            ui.AddToQueue("n");
             ui.AddToQueue("1,1 2,1 1,2");
             ui.AddToQueue("4");
 
@@ -77,7 +77,7 @@ namespace Conways.Game.Of.Life
 
             Game game = new Game(ui, displayFormatter, inputConverter, delayer, fileReader);
             ui.AddToQueue("4,4");
-            ui.AddToQueue("y");
+            ui.AddToQueue("n");
             ui.AddToQueue("2,0 2,1 2,2");
             ui.AddToQueue("1");
 
@@ -97,7 +97,7 @@ namespace Conways.Game.Of.Life
            var expectedPrints = numberOfGenerations + numberOfPrintStatementsBeforeMainLoop;
            Game game = new Game(ui, displayFormatter, inputConverter, delayer, fileReader);
           ui.AddToQueue("3,3");
-          ui.AddToQueue("y");
+          ui.AddToQueue("n");
           ui.AddToQueue("0,0 1,0 1,1 0,1");
           ui.AddToQueue(input);
 
@@ -121,7 +121,7 @@ namespace Conways.Game.Of.Life
             ui.AddToQueue("t");
             ui.AddToQueue(" ");
             ui.AddToQueue("5,4");
-            ui.AddToQueue("y");
+            ui.AddToQueue("n");
             ui.AddToQueue("1,1");
             ui.AddToQueue("10");
 
@@ -131,7 +131,7 @@ namespace Conways.Game.Of.Life
         }
 
         [Fact]
-        public void GridInitialStateCanBeSetByReadingDataFromCSVFile()
+        public void GridInitialStateCanBeSetByReadingValidDataFromCSVFile()
         {
             var expectedOutput = " . " + " . " + " . " + " . " + " . \n" +
                                  " . " + " . " + " . " + " . " + " . \n" +
@@ -141,7 +141,7 @@ namespace Conways.Game.Of.Life
 
             Game game = new Game(ui, displayFormatter, inputConverter, delayer, fileReader);
             ui.AddToQueue("5,5");
-            ui.AddToQueue("n");
+            ui.AddToQueue("y");
             ui.AddToQueue(@"/Users/James.Golding/Desktop/smallOscillator.csv");
             ui.AddToQueue("5");
 
@@ -149,7 +149,8 @@ namespace Conways.Game.Of.Life
 
             Assert.Equal(expectedOutput, ui.LastString);
         }
- 
+
+        
     }
 
     public class StubUI : IUserInterface

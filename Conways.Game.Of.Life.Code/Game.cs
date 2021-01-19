@@ -50,11 +50,11 @@ namespace Conways.Game.Of.Life
         private void SetUpGameInitalValues()
         {   
             var gridDimensions = GetGridDimensionsFromUser();
-             _gameGrid = new Grid(gridDimensions.NumberOfRows, gridDimensions.NumberOfColumns);
+            _gameGrid = new Grid(gridDimensions.NumberOfRows, gridDimensions.NumberOfColumns);
             var emptyStartingGrid = _formatter.GridToString(_gameGrid);
             _ui.Print(emptyStartingGrid);
             
-           LoopUntilValidInitialStateIsSet();
+            LoopUntilValidInitialStateIsSet();
 
             _ui.Print(_formatter.GridToString(_gameGrid));
 
@@ -112,30 +112,44 @@ namespace Conways.Game.Of.Life
         private string GetInitialStateFromUser()
         {
             string initalStateResponse;
-            _ui.Print("Manual entry y/n");
+
+            _ui.Print(OutputConstants.fileEntryQuestion);
             var userResponse = _ui.GetUserInput();
+
             if(userResponse == "y")
             {
-                _ui.Print(OutputConstants.startingStateInstructions);
-                initalStateResponse = _ui.GetUserInput();
+                try
+                {
+                    _ui.Print(@"Please enter file path (e.g /Users/Desktop/smallOscillator.csv");
+                    var filePath = _ui.GetUserInput();
+                    string[] fileData = _fileReader.ReadInputs(filePath);
+
+                    string entriesFromFile = "";
+                    int lastEntry = fileData.Length - 1;
+
+                    for(int fileEntry = 0; fileEntry <= lastEntry; fileEntry++)
+                    {
+                        if(fileEntry == lastEntry)
+                        {
+                            entriesFromFile = entriesFromFile + fileData[fileEntry];
+                        }
+                        else
+                        {
+                            entriesFromFile = entriesFromFile + fileData[fileEntry] + " ";
+                        }
+                    }
+                    initalStateResponse = entriesFromFile;
+                    
+                }
+                catch(System.Exception)
+                {
+                    initalStateResponse = " ";
+                }
             }
             else
             {
-               var filePath = _ui.GetUserInput();
-               string temp = "";
-               string[] fileData = _fileReader.ReadInputs(filePath);
-               for(int i = 0; i < fileData.Length; i++)
-               {
-                   if(i == fileData.Length - 1)
-                   {
-                       temp = temp + fileData[i];
-                   }
-                   else
-                   {
-                        temp = temp + fileData[i] + " ";
-                   }
-               }
-                initalStateResponse = temp;
+                _ui.Print(OutputConstants.startingStateInstructions);
+                initalStateResponse = _ui.GetUserInput();
             }
             return initalStateResponse;      
         }

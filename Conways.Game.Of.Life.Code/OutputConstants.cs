@@ -11,5 +11,8 @@ namespace Conways.Game.Of.Life
         public const string initialGridStateOutOfRangeException = "Please enter two numbers seperated by a comma.";
         public const string initialGridStateFormatException = "Input not in a correct format. Please input pairs of numbers seperated by a comma. eg 0,0 1,2";
         public const string maxGenerationFormatException = "Please enter a number greater than zero.";
+        public const string fileEntryQuestion = "File entry y/n?";
+        public const string directoryExceptionMessage = "Could not find directory";
+        public const string fileNotFoundExceptionMessage = "Could not find file";
     }
 }
