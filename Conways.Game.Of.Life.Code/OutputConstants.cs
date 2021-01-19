@@ -8,7 +8,7 @@ namespace Conways.Game.Of.Life
         public const string rowsColumnsInputErrorMesage = "Error please enter rows and columns again";
         public const string rowsColumnsFormatExceptionMessage = "Input not in a correct format. Please use format: row,column";
         public const string gridDimensionOutOfRangeExceptionMessage = "Please enter two numbers seperated by a comma.";
-        public const string initialGridStateOutOfRangeException = "Please enter two numbers seperated by a comma.";
+        public const string initialGridStateOutOfRangeException = "Please enter number pairs seperated by a comma. - index out of range";
         public const string initialGridStateFormatException = "Input not in a correct format. Please input pairs of numbers seperated by a comma. eg 0,0 1,2";
         public const string maxGenerationFormatException = "Please enter a number greater than zero.";
         public const string fileEntryQuestion = "File entry y/n?";

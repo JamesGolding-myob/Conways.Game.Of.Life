@@ -75,7 +75,7 @@ namespace Conways.Game.Of.Life
        [Fact]
        public void OnlyOneNumberWhenSettingInitialStateThrowsIndexOutOfRangeException()
        {
-            var expectedErrorMessage = "Please enter two numbers seperated by a comma.";
+            var expectedErrorMessage = "Please enter number pairs seperated by a comma. - index out of range";
             
             var ex = Assert.Throws<IndexOutOfRangeException>(() => converter.ConvertStartingGenerationInputToCoordinates("1"));
             Assert.Equal(expectedErrorMessage, ex.Message);
