@@ -262,6 +262,19 @@ namespace Conways.Game.Of.Life.Tests
 
             Assert.True(CellsAreDeadAfterTick(twoByOne));
         }
+
+        [Fact]
+        public void OutOfRangeLocationIsFilteredOutBeforeBeingtSetInInitialState()
+        {
+            
+            Grid threeByThree = new Grid(3,3);
+            var input = new List<Location>{new Location(0,0), new Location(3,3), new Location(2,2)};
+
+            threeByThree.SeedInitialGridState(input);
+            Assert.True(threeByThree.CurrentGeneration[2,2].IsAlive);
+            Assert.True(threeByThree.CurrentGeneration[0,0].IsAlive);
+        }
+
  
         private int ManyCellsSetToAlive(Grid grid)
         {

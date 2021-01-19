@@ -179,6 +179,7 @@ namespace Conways.Game.Of.Life
         }
 
         
+        
     }
 
     public class StubUI : IUserInterface

@@ -35,9 +35,13 @@ namespace Conways.Game.Of.Life
 
         public void SeedInitialGridState(List<Location> locationsToBeAlive)
         {
+            
             foreach (var location in locationsToBeAlive)
             {
-                CurrentGeneration[location.Row, location.Column].IsAlive = Alive;   
+                if(location.Row < NumberOfRows && location.Column < NumberOfColumns)
+                {
+                    CurrentGeneration[location.Row, location.Column].IsAlive = Alive;   
+                }
             }
         }
 
