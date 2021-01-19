@@ -14,7 +14,8 @@ namespace Conways.Game.Of.Life
         public const string fileEntryQuestion = "File entry y/n?";
         public const string directoryExceptionMessage = "Could not find directory";
         public const string fileNotFoundExceptionMessage = "Could not find file";
-        
+
         public const string  genericErrorMessage = "Error";
+        public const string genericFileReadErrorMessage = "File Read Error";
     }
 }

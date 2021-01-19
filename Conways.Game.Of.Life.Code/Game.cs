@@ -143,6 +143,7 @@ namespace Conways.Game.Of.Life
                 }
                 catch(System.Exception)
                 {
+                    _ui.Print(OutputConstants.genericFileReadErrorMessage);
                     initalStateResponse = " ";
                 }
             }
