@@ -166,7 +166,11 @@ namespace Conways.Game.Of.Life
                 }
                 catch (FormatException)
                 {
-                    _ui.Print("Error");
+                    _ui.Print(OutputConstants.maxGenerationFormatException);
+                }
+                catch(System.Exception)
+                {
+                    _ui.Print(OutputConstants.genericErrorMessage);
                 }
             } while (true);
         }

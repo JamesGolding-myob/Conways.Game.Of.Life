@@ -12,7 +12,7 @@ namespace Conways.Game.Of.Life
         [InlineData("5,4", 5, 4)]
         [InlineData("6,20", 6, 20)]
         [InlineData("10,2", 10, 2)]
-        public void CommaSeperatednumbersAreConvertedForNumberOfColumnsAndRows(string input, int expectedRowOutput, int expectedColumnOutput)
+        public void CommaSeperatedNumbersAreConvertedForNumberOfColumnsAndRows(string input, int expectedRowOutput, int expectedColumnOutput)
         {
             Assert.Equal(expectedRowOutput, converter.ConvertGridRowsAndColumns(input).NumberOfRows);
             Assert.Equal(expectedColumnOutput, converter.ConvertGridRowsAndColumns(input).NumberOfColumns);

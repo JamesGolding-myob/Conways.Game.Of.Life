@@ -29,7 +29,7 @@ namespace Conways.Game.Of.Life.Tests
         [InlineData(0,2)]
         [InlineData(0,1)]
         [InlineData(0,0)]
-        public void CanSetAnyCellInsideTheGridToAlive(int locationRow, int locationColumn)
+        public void CanSetAnySingleCellInsideTheGridToAlive(int locationRow, int locationColumn)
         {
             Grid threeByThree = new Grid(3,3);
             var input = new List<Location>
@@ -140,7 +140,7 @@ namespace Conways.Game.Of.Life.Tests
         [InlineData(0, 0, 1, 0, 2, 0)]
         [InlineData(3, 4, 4, 3, 5, 2)]
         [InlineData(5, 3, 4, 4, 5, 5)]
-        public void CellWithTwoNeighboursLivesOn(int firstNeighbourRow, int firstNeighbourColumn, int cellOfInterestRow, int cellOfInterestColumn, int secondNeoighbourRow, int secondNeihbourColumn)
+        public void ACellWithTwoNeighboursLivesOn(int firstNeighbourRow, int firstNeighbourColumn, int cellOfInterestRow, int cellOfInterestColumn, int secondNeoighbourRow, int secondNeihbourColumn)
         {
             Grid sixBySix = new Grid(6,6);
             var input = new List<Location>
@@ -159,7 +159,7 @@ namespace Conways.Game.Of.Life.Tests
         [InlineData(0)]
         [InlineData(1)]
         [InlineData(2)]
-        public void AFullRowOfLiveCellsSurvivesDueToHorizontalWrappingOfNeighbours(int row)
+        public void AFullRowOfLiveCellsInAGridSurvivesDueToHorizontalWrappingOfNeighboursAroundTheEdgesOfTheGrid(int row)
         {
             Grid threeByThree = new Grid(3,3);
             var input = new List<Location>
@@ -180,7 +180,7 @@ namespace Conways.Game.Of.Life.Tests
         [InlineData(1)]
         [InlineData(2)]
         [InlineData(3)]
-        public void AFullColumnOfLiveCellsSurvivesDueToVerticalWrappingOfNeighbours(int column)
+        public void AFullColumnOfLiveCellsInAGriidSurvivesDueToVerticalWrappingOfNeighboursAroundTheEdgesOfTheGrid(int column)
         {
             Grid fourByFour = new Grid(4, 4);
             var input = new List<Location>

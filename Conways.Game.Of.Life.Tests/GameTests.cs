@@ -20,10 +20,10 @@ namespace Conways.Game.Of.Life
             
  
             Game game = new Game(ui, displayFormatter, inputConverter, delayer, fileReader);
-            ui.AddToQueue("3,4");
-            ui.AddToQueue("n");
-            ui.AddToQueue("2,0 2,1 2,2 2,3");
-            ui.AddToQueue("1");
+            ui.AddToQueue("3,4");//setting grid dimension input
+            ui.AddToQueue("n");//manual initial state entry method chosen
+            ui.AddToQueue("2,0 2,1 2,2 2,3");//starting grid pattern inputed
+            ui.AddToQueue("1");//number of generation iterations inputed
 
             game.Run();
 
@@ -59,7 +59,7 @@ namespace Conways.Game.Of.Life
             Game game = new Game(ui, displayFormatter, inputConverter, delayer, fileReader);
             ui.AddToQueue("4,4");
             ui.AddToQueue("n");
-            ui.AddToQueue("1,1 2,1 1,2");
+            ui.AddToQueue("2,1 1,1 1,2");
             ui.AddToQueue("4");
 
             game.Run();
@@ -93,8 +93,13 @@ namespace Conways.Game.Of.Life
        [InlineData("100", 100)] 
         public void MoreThanOneGenerationInGameSetByTheUser(string input, int numberOfGenerations)
        {
-           int numberOfPrintStatementsBeforeMainLoop = 7;
-           var expectedPrints = numberOfGenerations + numberOfPrintStatementsBeforeMainLoop;
+            int numberOfPrintsInRunLoop = 1;
+            int numberofPrintForGettingGridDems = 1;
+            int numberofPrintsInSetUpIntialValues = 2;
+            int numberOfPrintsValidateInitialState = 2;
+            int numberOfPrintsForValidMaxGens = 1;
+
+           var expectedPrints = numberOfGenerations + numberOfPrintsInRunLoop + numberofPrintForGettingGridDems + numberofPrintsInSetUpIntialValues + numberOfPrintsValidateInitialState + numberOfPrintsForValidMaxGens;
            Game game = new Game(ui, displayFormatter, inputConverter, delayer, fileReader);
           ui.AddToQueue("3,3");
           ui.AddToQueue("n");
@@ -110,13 +115,14 @@ namespace Conways.Game.Of.Life
         public void GameQuitsEarlyWhenAllCellsInAGenerationAreDead()
         {
             int numberOfPrintsInRunLoop = 1;
-            int numberofPrintFoGettingGridDems = 1;
+            int numberofPrintForGettingGridDems = 1;
             int numberofPrintsInSetUpIntialValues = 2;
             int numberPrintsAssociatedWithInvalidInputs = 4;
             int numberOfPrintsValidateInitialState = 2;
             int numberOfPrintsForValidMaxGens = 1;
             int numberOfExpectedGameLoopsBeforeEnding = 1;
-            var expectedPrints = numberOfPrintsInRunLoop + numberofPrintFoGettingGridDems + numberofPrintsInSetUpIntialValues + numberOfPrintsValidateInitialState + numberOfPrintsForValidMaxGens + numberPrintsAssociatedWithInvalidInputs + numberOfExpectedGameLoopsBeforeEnding;
+
+            var expectedPrints = numberOfPrintsInRunLoop + numberofPrintForGettingGridDems + numberofPrintsInSetUpIntialValues + numberOfPrintsValidateInitialState + numberOfPrintsForValidMaxGens + numberPrintsAssociatedWithInvalidInputs + numberOfExpectedGameLoopsBeforeEnding;
             Game allDead = new Game(ui, displayFormatter, inputConverter, delayer, fileReader);
             ui.AddToQueue("t");
             ui.AddToQueue(" ");
@@ -144,6 +150,28 @@ namespace Conways.Game.Of.Life
             ui.AddToQueue("y");
             ui.AddToQueue(@"/Users/James.Golding/Desktop/smallOscillator.csv");
             ui.AddToQueue("5");
+
+            game.Run();
+
+            Assert.Equal(expectedOutput, ui.LastString);
+        }
+
+        [Fact]
+        public void ThrowingAnExceptionReadingFromCSVFileLoopsBackToFilePathInput()
+        {
+            var expectedOutput = " . " + " . " + " . " + " . " + " . \n" +
+                                 " . " + " . " + " . " + " . " + " . \n" +
+                                 " A " + " A " + " A " + " . " + " . \n" +
+                                 " . " + " . " + " . " + " . " + " . \n" +
+                                 " . " + " . " + " . " + " . " + " . \n" ;
+
+            Game game = new Game(ui, displayFormatter, inputConverter, delayer, fileReader);
+            ui.AddToQueue("5,5");
+            ui.AddToQueue("y");
+            ui.AddToQueue(@"/Users/James.Golding/Desktop/smallOscillator1.csv");
+            ui.AddToQueue("y");
+            ui.AddToQueue(@"/Users/James.Golding/Desktop/smallOscillator.csv");
+            ui.AddToQueue("3");
 
             game.Run();
 
