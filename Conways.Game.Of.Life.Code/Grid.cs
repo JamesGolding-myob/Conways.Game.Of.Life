@@ -4,11 +4,6 @@ namespace Conways.Game.Of.Life
 {
     public class Grid
     {
-        private const bool Alive = true;
-        private const bool Dead = false;
-        private const int NeighbourLimitToBecomeAlive = 3;
-        private const int NeighbourLimitForOverPopulation = 3;
-        private const int NeighbourLimitForUnderPopulation = 2;
         public Cell[,] CurrentGeneration {get; private set;}
         public int NumberOfColumns{get; private set;}
         public int NumberOfRows{get; private set;}
@@ -33,11 +28,14 @@ namespace Conways.Game.Of.Life
             }
         }
 
-        public void SeedInitialGridState(List<Location> locationsToBeAlive)
-        {
+        public void SeedGridState(List<Location> locationsToBeAlive)
+        {  
             foreach (var location in locationsToBeAlive)
             {
-                CurrentGeneration[location.Row, location.Column].IsAlive = Alive;   
+                if(location.Row < NumberOfRows && location.Column < NumberOfColumns)
+                {
+                    CurrentGeneration[location.Row, location.Column].IsAlive = GridConstants.Alive;   
+                }
             }
         }
 
@@ -49,36 +47,35 @@ namespace Conways.Game.Of.Life
             foreach(Cell cell in CurrentGeneration)
             {
                 List<Cell> liveNeighbours = GetLiveNeighbours(cell);
-                if(NumberOfRows < 2 || NumberOfColumns <2)
+                if(NumberOfRows < GridConstants.SmallestGridDimension || NumberOfColumns < GridConstants.SmallestGridDimension)
                 {
                     cellsToBeDeadInNextGeneration.Add(cell);
                 }
                 else
                 {
-                    if(liveNeighbours.Count < NeighbourLimitForUnderPopulation)
+                    if(liveNeighbours.Count < GridConstants.NeighbourLimitForUnderPopulation)
                     {
                         cellsToBeDeadInNextGeneration.Add(cell);
                     }
 
-                    if(liveNeighbours.Count == NeighbourLimitToBecomeAlive)
+                    if(liveNeighbours.Count == GridConstants.NeighbourLimitToBecomeAlive)
                     {
                         cellsToBecomeAliveInNextGeneration.Add(cell);
                     }
                     
-                    if(liveNeighbours.Count > NeighbourLimitForOverPopulation)
+                    if(liveNeighbours.Count > GridConstants.NeighbourLimitForOverPopulation)
                     {
                         cellsToBeDeadInNextGeneration.Add(cell);
                     }   
-                }
-                
+                } 
             }
             UpdateGeneration(cellsToBeDeadInNextGeneration, cellsToBecomeAliveInNextGeneration);
         }
 
         public void UpdateGeneration(List<Cell> cellsToBeDeadNextGeneration, List<Cell> cellsToBecomeAlive)
         {
-            UpdateCellStatus(cellsToBeDeadNextGeneration, Dead);
-            UpdateCellStatus(cellsToBecomeAlive, Alive);
+            UpdateCellStatus(cellsToBeDeadNextGeneration, GridConstants.Dead);
+            UpdateCellStatus(cellsToBecomeAlive, GridConstants.Alive);
         }
 
         private void UpdateCellStatus(List<Cell> cellsToChange, bool status)

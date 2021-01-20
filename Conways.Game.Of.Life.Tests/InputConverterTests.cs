@@ -12,7 +12,7 @@ namespace Conways.Game.Of.Life
         [InlineData("5,4", 5, 4)]
         [InlineData("6,20", 6, 20)]
         [InlineData("10,2", 10, 2)]
-        public void CommaSeperatednumbersAreConvertedForNumberOfColumnsAndRows(string input, int expectedRowOutput, int expectedColumnOutput)
+        public void CommaSeperatedNumbersAreConvertedForNumberOfColumnsAndRows(string input, int expectedRowOutput, int expectedColumnOutput)
         {
             Assert.Equal(expectedRowOutput, converter.ConvertGridRowsAndColumns(input).NumberOfRows);
             Assert.Equal(expectedColumnOutput, converter.ConvertGridRowsAndColumns(input).NumberOfColumns);
@@ -24,7 +24,7 @@ namespace Conways.Game.Of.Life
             List<Location> expectedOutput = new List<Location>{new Location(1, 2), new Location(5, 6)};
             var inputString = "1,2 5,6";
 
-            Assert.True(ListValuesAreTheSame(expectedOutput, converter.ConvertStartingGenerationInputToCoordinates(inputString)));
+            Assert.True(ListValuesAreTheSame(expectedOutput, converter.ConvertStartingGenerationInputToLocations(inputString)));
         }
 
         [Fact]
@@ -68,16 +68,16 @@ namespace Conways.Game.Of.Life
        {
            var expectedErrorMessage = "Input not in a correct format. Please input pairs of numbers seperated by a comma. eg 0,0 1,2";
             
-           var ex = Assert.Throws<FormatException>(() => converter.ConvertStartingGenerationInputToCoordinates(" "));
+           var ex = Assert.Throws<FormatException>(() => converter.ConvertStartingGenerationInputToLocations(" "));
            Assert.Equal(expectedErrorMessage, ex.Message);
        }
 
        [Fact]
        public void OnlyOneNumberWhenSettingInitialStateThrowsIndexOutOfRangeException()
        {
-            var expectedErrorMessage = "Please enter two numbers seperated by a comma.";
+            var expectedErrorMessage = "Please enter number pairs seperated by a comma. - index out of range";
             
-            var ex = Assert.Throws<IndexOutOfRangeException>(() => converter.ConvertStartingGenerationInputToCoordinates("1"));
+            var ex = Assert.Throws<IndexOutOfRangeException>(() => converter.ConvertStartingGenerationInputToLocations("1"));
             Assert.Equal(expectedErrorMessage, ex.Message);
        }
 

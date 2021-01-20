@@ -16,25 +16,25 @@ namespace Conways.Game.Of.Life
             }
             catch (FormatException)
             { 
-                throw new FormatException(OutputConstants.rowsColumnsFormatExceptionMessage);
+                throw new FormatException(MessageConstants.RowsColumnsFormatExceptionMessage);
             }
             catch(IndexOutOfRangeException)
             {
-                throw new IndexOutOfRangeException(OutputConstants.gridDimensionOutOfRangeExceptionMessage);
+                throw new IndexOutOfRangeException(MessageConstants.GridDimensionOutOfRangeExceptionMessage);
             }
             return output;
         }
 
-        public List<Location> ConvertStartingGenerationInputToCoordinates(string input)
+        public List<Location> ConvertStartingGenerationInputToLocations(string input)
         {
             var splitInput = input.Split(" ", StringSplitOptions.None);
-           List<Location> coordinateList = new List<Location>();
+           List<Location> locationList = new List<Location>();
 
             foreach (var inputCoordinate in splitInput)
             {
                 try
                 {
-                    coordinateList.Add(ConvertToGridLocation(inputCoordinate));   
+                    locationList.Add(ConvertToGridLocation(inputCoordinate));   
                 }
                 catch (FormatException)
                 {  
@@ -45,7 +45,7 @@ namespace Conways.Game.Of.Life
                     throw;
                 }
             }
-            return coordinateList;
+            return locationList;
         }
 
         public Location ConvertToGridLocation(string inputCoordinates)
@@ -59,11 +59,11 @@ namespace Conways.Game.Of.Life
             }
             catch(IndexOutOfRangeException)
             {
-                throw new IndexOutOfRangeException(OutputConstants.initialGridStateOutOfRangeException);
+                throw new IndexOutOfRangeException(MessageConstants.InitialGridStateOutOfRangeException);
             }
             catch (FormatException)
             {
-                throw new FormatException(OutputConstants.initialGridStateFormatException);
+                throw new FormatException(MessageConstants.InitialGridStateFormatException);
             }
             return result;
         }
@@ -76,7 +76,7 @@ namespace Conways.Game.Of.Life
             }
             catch (FormatException)
             {
-                throw new FormatException(OutputConstants.maxGenerationFormatException);
+                throw new FormatException(MessageConstants.MaxGenerationFormatException);
             }
         }
 
