@@ -5,24 +5,79 @@ namespace Conways.Game.Of.Life
 {
     public class InputConverter
     {
-        public Tuple<int, int> ConvertGridRowsAndColumns(string rowsAndColumns)
+        public Dimensions ConvertGridRowsAndColumns(string rowsAndColumns)
         {
-            var splitRowsAndColumns = rowsAndColumns.Split(",", StringSplitOptions.None);
-
-            return new Tuple<int, int>(Int32.Parse(splitRowsAndColumns[0]), Int32.Parse(splitRowsAndColumns[1]));
+            string[]splitRowsAndColumns;
+            Dimensions output;
+            try
+            {
+                splitRowsAndColumns = rowsAndColumns.Split(",", StringSplitOptions.None);
+                output = new Dimensions(Int32.Parse(splitRowsAndColumns[0]), Int32.Parse(splitRowsAndColumns[1]));
+            }
+            catch (FormatException)
+            { 
+                throw new FormatException(OutputConstants.rowsColumnsFormatExceptionMessage);
+            }
+            catch(IndexOutOfRangeException)
+            {
+                throw new IndexOutOfRangeException(OutputConstants.gridDimensionOutOfRangeExceptionMessage);
+            }
+            return output;
         }
 
-        public List<Tuple<int, int>> ConvertStartingGenerationInputToCoordinates(string input)
+        public List<Location> ConvertStartingGenerationInputToCoordinates(string input)
         {
             var splitInput = input.Split(" ", StringSplitOptions.None);
-           List<Tuple<int, int>>  coordinateList = new List<Tuple<int, int>>();
+           List<Location> coordinateList = new List<Location>();
 
             foreach (var inputCoordinate in splitInput)
             {
-                coordinateList.Add(ConvertGridRowsAndColumns(inputCoordinate));
+                try
+                {
+                    coordinateList.Add(ConvertToGridLocation(inputCoordinate));   
+                }
+                catch (FormatException)
+                {  
+                    throw;
+                }
+                catch(IndexOutOfRangeException)
+                {
+                    throw;
+                }
             }
-
             return coordinateList;
+        }
+
+        public Location ConvertToGridLocation(string inputCoordinates)
+        {
+            Location result;
+            string[] splitRowsAndColumns = inputCoordinates.Split(",", StringSplitOptions.None);
+
+            try
+            {
+                result = new Location(Int32.Parse(splitRowsAndColumns[0]), Int32.Parse(splitRowsAndColumns[1]));
+            }
+            catch(IndexOutOfRangeException)
+            {
+                throw new IndexOutOfRangeException(OutputConstants.initialGridStateOutOfRangeException);
+            }
+            catch (FormatException)
+            {
+                throw new FormatException(OutputConstants.initialGridStateFormatException);
+            }
+            return result;
+        }
+
+        public int ConvertMaxGenerations(string inputFromUser)
+        {
+            try
+            {
+                return Int32.Parse(inputFromUser);
+            }
+            catch (FormatException)
+            {
+                throw new FormatException(OutputConstants.maxGenerationFormatException);
+            }
         }
 
     }

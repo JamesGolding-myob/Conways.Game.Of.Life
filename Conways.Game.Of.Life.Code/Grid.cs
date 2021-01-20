@@ -1,10 +1,14 @@
 using System.Collections.Generic;
-using System;
 using System.Linq;
 namespace Conways.Game.Of.Life
 {
     public class Grid
     {
+        private const bool Alive = true;
+        private const bool Dead = false;
+        private const int NeighbourLimitToBecomeAlive = 3;
+        private const int NeighbourLimitForOverPopulation = 3;
+        private const int NeighbourLimitForUnderPopulation = 2;
         public Cell[,] CurrentGeneration {get; private set;}
         public int NumberOfColumns{get; private set;}
         public int NumberOfRows{get; private set;}
@@ -29,36 +33,73 @@ namespace Conways.Game.Of.Life
             }
         }
 
-        public void SetInitialGridState(List<Tuple<int, int>> locationsToBeAlive)
+        public void SeedInitialGridState(List<Location> locationsToBeAlive)
         {
             foreach (var location in locationsToBeAlive)
             {
-                CurrentGeneration[location.Item1, location.Item2].IsAlive = true;   
+                CurrentGeneration[location.Row, location.Column].IsAlive = Alive;   
             }
         }
 
         public void ApplyRulesToGrid()
         {
             List<Cell> cellsToBeDeadInNextGeneration = new List<Cell>();
+            List<Cell> cellsToBecomeAliveInNextGeneration = new List<Cell>();
 
             foreach(Cell cell in CurrentGeneration)
             {
                 List<Cell> liveNeighbours = GetLiveNeighbours(cell);
-               if(liveNeighbours.Count < 2)
-               {
-                   cellsToBeDeadInNextGeneration.Add(cell);
-               }   
+                if(NumberOfRows < 2 || NumberOfColumns <2)
+                {
+                    cellsToBeDeadInNextGeneration.Add(cell);
+                }
+                else
+                {
+                    if(liveNeighbours.Count < NeighbourLimitForUnderPopulation)
+                    {
+                        cellsToBeDeadInNextGeneration.Add(cell);
+                    }
+
+                    if(liveNeighbours.Count == NeighbourLimitToBecomeAlive)
+                    {
+                        cellsToBecomeAliveInNextGeneration.Add(cell);
+                    }
+                    
+                    if(liveNeighbours.Count > NeighbourLimitForOverPopulation)
+                    {
+                        cellsToBeDeadInNextGeneration.Add(cell);
+                    }   
+                }
+                
             }
-            UpdateGeneration(cellsToBeDeadInNextGeneration);
+            UpdateGeneration(cellsToBeDeadInNextGeneration, cellsToBecomeAliveInNextGeneration);
         }
 
-        public void UpdateGeneration(List<Cell> cellsToBeDeadNextGeneration)
+        public void UpdateGeneration(List<Cell> cellsToBeDeadNextGeneration, List<Cell> cellsToBecomeAlive)
         {
-            foreach (Cell cell in cellsToBeDeadNextGeneration)
-            {
-                CurrentGeneration[cell.GridLocation.Row, cell.GridLocation.Column].IsAlive = false;
-            }
+            UpdateCellStatus(cellsToBeDeadNextGeneration, Dead);
+            UpdateCellStatus(cellsToBecomeAlive, Alive);
+        }
 
+        private void UpdateCellStatus(List<Cell> cellsToChange, bool status)
+        {
+            foreach (Cell cell in cellsToChange)
+            {
+                CurrentGeneration[cell.GridLocation.Row, cell.GridLocation.Column].IsAlive = status;
+            }
+        }
+        public bool AllCellsDead()
+        {
+            bool result = true;
+            foreach(Cell cell in CurrentGeneration)
+            {
+                if(cell.IsAlive)
+                {
+                    result = false;
+                    break;
+                }
+            }
+            return result;
         }
 
         private List<Cell> GetLiveNeighbours(Cell cellOfInterest)
@@ -108,52 +149,44 @@ namespace Conways.Game.Of.Life
             {
                 case NeighbourLocation.TopLeft:
                 {
-                    neighbour = CurrentGeneration[rowAboveIndex <= topRowIndex ? rowAboveIndex : bottomRowIndex, columnToTheLeftIndex >= leftMostColumnIndex ? columnToTheLeftIndex : rightMostColumnIndex];
+                    neighbour = CurrentGeneration[GetWrappedIndex(rowAboveIndex, topRowIndex, bottomRowIndex), GetWrappedIndex(columnToTheLeftIndex, rightMostColumnIndex, leftMostColumnIndex)];
                     break;
                 }
-               
                 case NeighbourLocation.TopRight:
                 {
-                    neighbour = CurrentGeneration[rowAboveIndex <= topRowIndex ? rowAboveIndex : bottomRowIndex, columnToTheRightIndex <= rightMostColumnIndex ? columnToTheRightIndex : leftMostColumnIndex];
+                    neighbour = CurrentGeneration[GetWrappedIndex(rowAboveIndex, topRowIndex, bottomRowIndex), GetWrappedIndex(columnToTheRightIndex, rightMostColumnIndex, leftMostColumnIndex)];
                     break;
                 }
-
                 case NeighbourLocation.TopCentre:
                 {
-                    neighbour = CurrentGeneration[rowAboveIndex <= topRowIndex ? rowAboveIndex : bottomRowIndex, currentPosition.Column];
+                    neighbour = CurrentGeneration[GetWrappedIndex(rowAboveIndex, topRowIndex, bottomRowIndex), currentPosition.Column];
                     break;
                 }
-
                 case NeighbourLocation.Right:
                 {
-                    neighbour = CurrentGeneration[currentPosition.Row, columnToTheRightIndex <= rightMostColumnIndex ? columnToTheRightIndex : leftMostColumnIndex];
+                    neighbour = CurrentGeneration[currentPosition.Row, GetWrappedIndex(columnToTheRightIndex, rightMostColumnIndex, leftMostColumnIndex)];
                     break;
                 }
-
                 case NeighbourLocation.Left:
                 {
-                    neighbour = CurrentGeneration[currentPosition.Row, columnToTheLeftIndex >= leftMostColumnIndex ? columnToTheLeftIndex : rightMostColumnIndex];
+                    neighbour = CurrentGeneration[currentPosition.Row, GetWrappedIndex(columnToTheLeftIndex, rightMostColumnIndex, leftMostColumnIndex)];
                     break; 
                 }
-
                 case NeighbourLocation.BottomLeft:
                 {
-                    neighbour = CurrentGeneration[rowBelowIndex >= bottomRowIndex ? rowBelowIndex : topRowIndex, columnToTheLeftIndex >= leftMostColumnIndex ? columnToTheLeftIndex : rightMostColumnIndex];
+                    neighbour = CurrentGeneration[GetWrappedIndex(rowBelowIndex, topRowIndex, bottomRowIndex), GetWrappedIndex(columnToTheLeftIndex, rightMostColumnIndex, leftMostColumnIndex)];
                     break;
                 }
-
                  case NeighbourLocation.BottomRight:
                 {
-                    neighbour = CurrentGeneration[rowBelowIndex >= bottomRowIndex ? rowBelowIndex : topRowIndex, columnToTheRightIndex < NumberOfColumns ? columnToTheRightIndex : leftMostColumnIndex];
+                    neighbour = CurrentGeneration[GetWrappedIndex(rowBelowIndex, topRowIndex, bottomRowIndex), GetWrappedIndex(columnToTheRightIndex, rightMostColumnIndex, leftMostColumnIndex)];
                     break;
                 }
-
                 case NeighbourLocation.BottomCentre:
                 {
-                    neighbour = CurrentGeneration[rowBelowIndex >= bottomRowIndex ? rowBelowIndex : topRowIndex, currentPosition.Column];
+                    neighbour = CurrentGeneration[GetWrappedIndex(rowBelowIndex, topRowIndex, bottomRowIndex), currentPosition.Column];
                     break;
                 }
-                
                 default:
                 {
                     neighbour = CurrentGeneration[0,0];
@@ -162,7 +195,11 @@ namespace Conways.Game.Of.Life
             }
             return neighbour;
         } 
-       
-       
+
+        private int GetWrappedIndex(int location, int upperBound, int lowerBound)
+        {
+            return location < lowerBound ? upperBound :
+                    location > upperBound ? lowerBound : location;
+        }
     }
 }
