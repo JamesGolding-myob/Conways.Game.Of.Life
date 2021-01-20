@@ -13,11 +13,11 @@ namespace Conways.Game.Of.Life
             }
             catch (DirectoryNotFoundException)
             {
-                throw new DirectoryNotFoundException(OutputConstants.directoryExceptionMessage);
+                throw new DirectoryNotFoundException(MessageConstants.DirectoryExceptionMessage);
             }
             catch(FileNotFoundException)
             {
-                throw new FileNotFoundException(OutputConstants.fileNotFoundExceptionMessage);
+                throw new FileNotFoundException(MessageConstants.FileNotFoundExceptionMessage);
             }
             
             return output;

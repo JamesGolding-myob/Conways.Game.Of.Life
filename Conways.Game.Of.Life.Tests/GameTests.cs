@@ -8,7 +8,7 @@ namespace Conways.Game.Of.Life
         InputConverter inputConverter = new InputConverter();
         DisplayFormatter displayFormatter = new DisplayFormatter();
         StubUI ui = new StubUI(); 
-        Delayer delayer = new Delayer(1);
+        Delayer delayer = new Delayer(1);//one millisec for quick tests
         FileReader fileReader = new FileReader();
 
         [Fact]
@@ -27,7 +27,7 @@ namespace Conways.Game.Of.Life
 
             game.Run();
 
-            Assert.Equal(expectedOutput, ui.LastString);
+            Assert.Equal(expectedOutput, ui.LastStringPrinted);
         }
 
         [Fact]
@@ -45,7 +45,7 @@ namespace Conways.Game.Of.Life
 
             game.Run();
 
-            Assert.Equal(expectedOutput, ui.LastString);
+            Assert.Equal(expectedOutput, ui.LastStringPrinted);
         }
 
         [Fact]
@@ -64,7 +64,7 @@ namespace Conways.Game.Of.Life
 
             game.Run();
 
-            Assert.Equal(expectedOutput, ui.LastString);
+            Assert.Equal(expectedOutput, ui.LastStringPrinted);
         }
 
         [Fact]
@@ -83,7 +83,7 @@ namespace Conways.Game.Of.Life
 
             game.Run();
 
-            Assert.Equal(expectedOutput, ui.LastString);
+            Assert.Equal(expectedOutput, ui.LastStringPrinted);
         } 
 
         [Theory]
@@ -147,13 +147,13 @@ namespace Conways.Game.Of.Life
 
             Game game = new Game(ui, displayFormatter, inputConverter, delayer, fileReader);
             ui.AddToQueue("5,5");
-            ui.AddToQueue("y");
-            ui.AddToQueue(@"/Users/James.Golding/Desktop/smallOscillator.csv");
+            ui.AddToQueue("y");//file read option selected
+            ui.AddToQueue(@"/Users/James.Golding/Desktop/smallOscillator.csv");//csv file located on Desktop
             ui.AddToQueue("5");
 
             game.Run();
 
-            Assert.Equal(expectedOutput, ui.LastString);
+            Assert.Equal(expectedOutput, ui.LastStringPrinted);
         }
 
         [Fact]
@@ -167,24 +167,22 @@ namespace Conways.Game.Of.Life
 
             Game game = new Game(ui, displayFormatter, inputConverter, delayer, fileReader);
             ui.AddToQueue("5,5");
-            ui.AddToQueue("y");
-            ui.AddToQueue(@"/Users/James.Golding/Desktop/smallOscillator1.csv");
-            ui.AddToQueue("y");
+            ui.AddToQueue("y");//file read option selected
+            ui.AddToQueue(@"/Users/James.Golding/Desktop/smallOscillator1.csv");//this file doesn't exist
+            ui.AddToQueue("y");//file read option selected
             ui.AddToQueue(@"/Users/James.Golding/Desktop/smallOscillator.csv");
             ui.AddToQueue("3");
 
             game.Run();
 
-            Assert.Equal(expectedOutput, ui.LastString);
+            Assert.Equal(expectedOutput, ui.LastStringPrinted);
         }
-
-        
-        
+    
     }
 
     public class StubUI : IUserInterface
     {
-        public string LastString{get; private set;}
+        public string LastStringPrinted{get; private set;}
         private Queue myQ = new Queue();
         public int TimesCalled {get; set;}
         public StubUI()
@@ -198,7 +196,7 @@ namespace Conways.Game.Of.Life
 
         public void Print(string output)
         {
-            LastString = output;
+            LastStringPrinted = output;
             TimesCalled++;
         }
 
@@ -208,6 +206,5 @@ namespace Conways.Game.Of.Life
         }
 
     }
-
 
 }

@@ -1,17 +1,15 @@
 using System;
-
 namespace Conways.Game.Of.Life
 {
     public class Game
     {
-
         private IUserInterface _ui;
         private DisplayFormatter _formatter;
         private InputConverter _inputConverter;
         private Delayer _displayDelayer;
         private FileReader _fileReader;
-        private int _counter;
         private Grid _gameGrid;
+        private int _generationCounter;
         private int _numberOfGenerations;
         public Game(IUserInterface ui, DisplayFormatter displayFormatter, InputConverter inputConverter, Delayer delayer, FileReader fileReader)
         {
@@ -20,20 +18,31 @@ namespace Conways.Game.Of.Life
             _inputConverter = inputConverter;
            _displayDelayer = delayer;
            _fileReader = fileReader;
-           _counter = 0;
+           _generationCounter = 0;
         }
 
         public void Run()
         {
             SetUpGameInitalValues();
-
             _ui.Print(_formatter.GridToString(_gameGrid));
             SimulateFollowingGenerations();   
+        }
+        private void SetUpGameInitalValues()
+        {   
+            var gridDimensions = GetGridDimensionsFromUser();
+            _gameGrid = new Grid(gridDimensions.NumberOfRows, gridDimensions.NumberOfColumns);
+            var blankStartingGrid = _formatter.GridToString(_gameGrid);
+            _ui.Print(blankStartingGrid);
+            
+            LoopUntilValidInitialStateIsSet();
+            _ui.Print(_formatter.GridToString(_gameGrid));
+
+            LoopUntilValidMaxGenerationNumber();
         }
 
         private void SimulateFollowingGenerations()
         {
-            while(_counter < _numberOfGenerations )
+            while(_generationCounter < _numberOfGenerations )
             {
                 _displayDelayer.delayOutPut();
                 Console.Clear();
@@ -43,27 +52,13 @@ namespace Conways.Game.Of.Life
                 {
                     break;
                 }
-                _counter++;
+                _generationCounter++;
             }
-        }
-
-        private void SetUpGameInitalValues()
-        {   
-            var gridDimensions = GetGridDimensionsFromUser();
-            _gameGrid = new Grid(gridDimensions.NumberOfRows, gridDimensions.NumberOfColumns);
-            var emptyStartingGrid = _formatter.GridToString(_gameGrid);
-            _ui.Print(emptyStartingGrid);
-            
-            LoopUntilValidInitialStateIsSet();
-
-            _ui.Print(_formatter.GridToString(_gameGrid));
-
-            LoopUntilValidMaxGenerationNumber();
         }
 
         private void LoopUntilValidInitialStateIsSet()
         {
-            bool inputIsValid = false;
+            bool initialStateSet = false;
             do
             {
                 var initalState = GetInitialStateFromUser(); 
@@ -71,40 +66,38 @@ namespace Conways.Game.Of.Life
                 {
                     try
                     {
-                        _gameGrid.SeedInitialGridState(_inputConverter.ConvertStartingGenerationInputToCoordinates(initalState));
-                        inputIsValid = true;   
+                        _gameGrid.SeedGridState(_inputConverter.ConvertStartingGenerationInputToLocations(initalState));
+                        initialStateSet = true;   
                     }
                     catch (FormatException)
                     {  
-                        _ui.Print(OutputConstants.initialGridStateFormatException); 
+                        _ui.Print(MessageConstants.InitialGridStateFormatException); 
                     }
                     catch(IndexOutOfRangeException)
                     {
-                        _ui.Print(OutputConstants.initialGridStateOutOfRangeException);
+                        _ui.Print(MessageConstants.InitialGridStateOutOfRangeException);
                     }
                 }
                 else
                 {
-                    inputIsValid = true;
+                    initialStateSet = true;//no live cells set
                 }
                 
-            } while (!inputIsValid);
+            } while (!initialStateSet);
         }
 
         private Dimensions GetGridDimensionsFromUser()
         {      
-            string rowColumnInputFromUser; 
             do
             {   
                 try
                 {
-                    _ui.Print(OutputConstants.gridSizeInstructions);
-                    rowColumnInputFromUser = _ui.GetUserInput();
-                    return _inputConverter.ConvertGridRowsAndColumns(rowColumnInputFromUser);     
+                    _ui.Print(MessageConstants.GridSizeInstructions);
+                    return _inputConverter.ConvertGridRowsAndColumns(_ui.GetUserInput());     
                 }
                 catch (SystemException)
                 {
-                    _ui.Print(OutputConstants.rowsColumnsInputErrorMesage);                         
+                    _ui.Print(MessageConstants.RowsColumnsInputErrorMesage);                         
                 }
             } while(true);
         }
@@ -113,16 +106,15 @@ namespace Conways.Game.Of.Life
         {
             string initalStateResponse;
 
-            _ui.Print(OutputConstants.fileEntryQuestion);
+            _ui.Print(MessageConstants.FileEntryQuestion);
             var userResponse = _ui.GetUserInput();
 
-            if(userResponse == "y")
+            if(userResponse == MessageConstants.FileReadInputOptionSelected)
             {
                 try
                 {
-                    _ui.Print(@"Please enter file path (e.g /Users/Desktop/smallOscillator.csv");
-                    var filePath = _ui.GetUserInput();
-                    string[] fileData = _fileReader.ReadInputs(filePath);
+                    _ui.Print(MessageConstants.FileReadInstructions);
+                    string[] fileData = _fileReader.ReadInputs(_ui.GetUserInput());
 
                     string entriesFromFile = "";
                     int lastEntry = fileData.Length - 1;
@@ -143,13 +135,13 @@ namespace Conways.Game.Of.Life
                 }
                 catch(System.Exception)
                 {
-                    _ui.Print(OutputConstants.genericFileReadErrorMessage);
-                    initalStateResponse = " ";
+                    _ui.Print(MessageConstants.GenericFileReadErrorMessage);
+                    initalStateResponse = " ";//invalid initial state to stay in higher loop
                 }
             }
             else
             {
-                _ui.Print(OutputConstants.startingStateInstructions);
+                _ui.Print(MessageConstants.StartingStateInstructions);
                 initalStateResponse = _ui.GetUserInput();
             }
             return initalStateResponse;      
@@ -161,17 +153,17 @@ namespace Conways.Game.Of.Life
             {
                 try
                 {
-                    _ui.Print(OutputConstants.maxGenerationInstructions);
+                    _ui.Print(MessageConstants.MaxGenerationInstructions);
                     _numberOfGenerations = _inputConverter.ConvertMaxGenerations(_ui.GetUserInput());
                     break;
                 }
                 catch (FormatException)
                 {
-                    _ui.Print(OutputConstants.maxGenerationFormatException);
+                    _ui.Print(MessageConstants.MaxGenerationFormatException);
                 }
                 catch(System.Exception)
                 {
-                    _ui.Print(OutputConstants.genericErrorMessage);
+                    _ui.Print(MessageConstants.GenericErrorMessage);
                 }
             } while (true);
         }

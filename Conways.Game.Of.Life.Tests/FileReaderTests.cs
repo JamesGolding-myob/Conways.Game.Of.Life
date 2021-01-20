@@ -20,7 +20,7 @@ namespace Conways.Game.Of.Life
         public void BadFilePath_DirectoryExceptionReadingInitialStateFromCSVFile()
         {
             var expectedErrorMessage = "Could not find directory";
-            var ex = Assert.Throws<System.IO.DirectoryNotFoundException>(() => reader.ReadInputs(" /.csv"));
+            var ex = Assert.Throws<System.IO.DirectoryNotFoundException>(() => reader.ReadInputs(@"/Users/James.Golding/Desktop2/temp.csv"));
             Assert.Equal(expectedErrorMessage, ex.Message);    
         }
 
