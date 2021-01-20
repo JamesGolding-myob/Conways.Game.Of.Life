@@ -13,7 +13,7 @@ in this implemwntation:
 - A Cell on the edge of the grid, neighbours are calculated by using the other edge of the grid
 - A Cell cannot reference itself as one of it's own neighbours
   
-To try out the game for yourself, please clone the master branch.
+To try out the game for yourself, please clone the main branch.
 
 Once copied the game can be run from the root folder by running `dotnet run --project Conways.Game.Of.Life.Code/Conways.Game.Of.Life.Code.csproj` in your terminal window.
 
