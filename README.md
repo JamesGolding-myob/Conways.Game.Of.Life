@@ -10,7 +10,7 @@ Basic rules of the game are:
 - A Dead Cell with exactly 3 live neighbours become alive
 - A Live Cell with more than 3 live neighbours dies
 in this implemwntation:
-- A Cell on the edge of the grid, neighbours are calculated by using the other edge of the grid
+- A Cell on the edge of the grid, neighbours are calculated by using the other edge of the grid (wrapping)
 - A Cell cannot reference itself as one of it's own neighbours
   
 To try out the game for yourself, please clone the main branch.
@@ -106,5 +106,11 @@ Please enter the location (row,column) for any cells you wish to begin alive eg(
   Some exception handling has been included in the project - the ones included will cause the program to loop to the appropriate prompt while displaying an error message.
   Some tests use a absolute file path to access a file on the Desktop - these tests will fail until that path is updated to your local machine and an appropriately named file (with appropriate data used).
   If a CSV file contains locations outside the grid specified, they will be left out of the grid.**
+  When creating a csv file use two columns of data, one for the rows and one for columns eg.
+  1 1
+  0 0
+  2 3
+  5 5
+  (this is the equivalent to manual entry: 1,1 0,0 2,3 5,5)
  
  
