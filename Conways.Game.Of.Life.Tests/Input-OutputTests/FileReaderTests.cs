@@ -9,7 +9,7 @@ namespace Conways.Game.Of.Life
         [Fact]
         public void CanReadACellLocationString()
         {
-            var filePath = @"/Users/James.Golding/Desktop/temp.csv";
+            var filePath = @"/Users/James.Golding/Documents/GitHub/Conways.Game.Of.Life/Conways.Game.Of.Life.Code/CSVFiles/temp.csv";
             string[] data = reader.ReadInputs(filePath);
 
             Assert.Equal("1,1", data[0]); 
@@ -20,7 +20,7 @@ namespace Conways.Game.Of.Life
         public void BadFilePath_DirectoryExceptionReadingInitialStateFromCSVFile()
         {
             var expectedErrorMessage = "Could not find directory";
-            var ex = Assert.Throws<System.IO.DirectoryNotFoundException>(() => reader.ReadInputs(@"/Users/James.Golding/Desktop2/temp.csv"));
+            var ex = Assert.Throws<System.IO.DirectoryNotFoundException>(() => reader.ReadInputs(@"/Users/James.Golding/CSVFiles2/temp.csv"));
             Assert.Equal(expectedErrorMessage, ex.Message);    
         }
 
@@ -28,7 +28,7 @@ namespace Conways.Game.Of.Life
         public void BadFilePath_CouldNotFindFileExceptionReadingInitialStateFromCSVFile()
         {
             var expectedErrorMessage = "Could not find file";
-            var ex = Assert.Throws<System.IO.FileNotFoundException>(() => reader.ReadInputs(@"/Users/James.Golding/Desktop/temp2.csv"));
+            var ex = Assert.Throws<System.IO.FileNotFoundException>(() => reader.ReadInputs(@"/Users/James.Golding/Documents/GitHub/Conways.Game.Of.Life/Conways.Game.Of.Life.Code/CSVFiles/temp2.csv"));
             Assert.Equal(expectedErrorMessage, ex.Message);    
         }
  

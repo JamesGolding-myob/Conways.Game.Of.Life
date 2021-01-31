@@ -27,6 +27,7 @@ namespace Conways.Game.Of.Life
             _ui.Print(_formatter.GridToString(_gameGrid));
             SimulateFollowingGenerations();   
         }
+        
         private void SetUpGameInitalValues()
         {   
             var gridDimensions = GetGridDimensionsFromUser();

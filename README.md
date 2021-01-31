@@ -104,13 +104,13 @@ Please enter the location (row,column) for any cells you wish to begin alive eg(
  
  **Note: 
   Some exception handling has been included in the project - the ones included will cause the program to loop to the appropriate prompt while displaying an error message.
-  Some tests use a absolute file path to access a file on the Desktop - these tests will fail until that path is updated to your local machine and an appropriately named file (with appropriate data used).
+  Some tests use a absolute file path to access a file in the CSVFile Folder - these tests will fail until that path is updated to your local machine and an appropriately named file (with appropriate data used).
   If a CSV file contains locations outside the grid specified, they will be left out of the grid.**
   When creating a csv file use two columns of data, one for the rows and one for columns eg.
   1 1
   0 0
   2 3
   5 5
-  (this is the equivalent to manual entry: 1,1 0,0 2,3 5,5)
+  (this is the equivalent to manual entry: 1,1 0,0 2,3 5,5) - example CSV Files have been included under CSVFIles directory
  
  
